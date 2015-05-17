@@ -98,7 +98,7 @@ class Street extends DisplayObjectContainer {
         //..pivotX = deco.width/2
         //..pivotY = deco.height
         ..x = decoMap['x'] - decoMap['w'] ~/ 2
-        ..y = decoMap['y'] - decoMap['h'] + _streetDef['dynamic']['ground_y'];
+        ..y = decoMap['y'] - decoMap['h']; //+ _streetDef['dynamic']['ground_y'];
 
       if(layerDef['name'] == 'middleground')
       {

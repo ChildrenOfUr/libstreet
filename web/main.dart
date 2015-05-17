@@ -32,16 +32,18 @@ main() async {
 
   document.onKeyPress.listen((event) {
     var key = event.keyCode;
-    if (key == 68)
-      groddle.camera.x += 1;
-    if (key == 65)
-      groddle.camera.x -= 1;
-    if (key == 83)
-      groddle.camera.y += 1;
-    if (key == 87)
-      groddle.camera.y -= 1;
+    if (key == 100)
+      groddle.camera.x += 5;
+    if (key == 97)
+      groddle.camera.x -= 5;
+    if (key == 115)
+      groddle.camera.y += 5;
+    if (key == 119)
+      groddle.camera.y -= 5;
 
     print(groddle.camera);
+
+    print(key);
   });
 
 

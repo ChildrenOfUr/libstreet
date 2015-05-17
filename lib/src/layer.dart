@@ -11,9 +11,8 @@ class StreetLayer extends Sprite {
     num currentPercentY = (street.camera.y) / (street.bounds.height - STAGE.stageHeight);
 
     //modify left and top
-    x = -(def['w'] - STAGE.stageWidth) * currentPercentX;// - (def['w']/2);
-    y = -(def['h'] - STAGE.stageHeight) * currentPercentY;// - (def['h']/2);
-    y += street._streetDef['dynamic']['ground_y'];
+    x = -(def['w'] - STAGE.stageWidth) * currentPercentX;
+    y = -(def['h'] - STAGE.stageHeight) * currentPercentY;
 
     super.render(renderState);
   }
