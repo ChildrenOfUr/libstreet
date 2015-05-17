@@ -1,8 +1,39 @@
 import 'package:stagexl/stagexl.dart';
+import 'dart:html' as html;
 import 'dart:math' as Math;
 
 ResourceManager RESOURCES;
 Stage STAGE;
+
+
+
+
+
+
+
+
+/// TODO We'll use the Street and StreetLayer classes
+/// to proxy the DisplayObject containers instead of extending them
+/// This will prevent us from getting confused by the four different x variables.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Street extends DisplayObjectContainer {
   Map _streetDef;
@@ -10,12 +41,22 @@ class Street extends DisplayObjectContainer {
   String get label => _streetDef['label'];
   int get groundY => -(_streetDef['dynamic']['ground_y'] as int).abs();
 
+
   Rectangle get streetBounds => new Rectangle(
       _streetDef['dynamic']['l'],
       _streetDef['dynamic']['t'],
       (_streetDef['dynamic']['l'].abs() + _streetDef['dynamic']['r'].abs()).toInt(),
       (_streetDef['dynamic']['t'].abs() + _streetDef['dynamic']['b'].abs()).toInt()
   );
+
+  num camera_x = 0;
+  num camera_y = 0;
+  setCamera(num x, num y) {
+    camera_x = x;
+    camera_y = y;
+    update();
+  }
+
 
   Street(final this._streetDef);
 
@@ -76,6 +117,11 @@ class Street extends DisplayObjectContainer {
   }
 
   update() {
+
+    x= camera_x;
+    y= camera_y;
+
+
     List layers = children.where((E) => E is StreetLayer);
     for (StreetLayer layer in layers) {
       layer.update();
@@ -152,40 +198,4 @@ class StreetLayer extends Sprite {
 
   }
 
-}
-
-
-Camera camera = new Camera();
-
-class Camera
-{
-  int _x = 0, _y = 0, zoom = 0;
-
-  // for future eyeballery
-  bool dirty = true;
-  Rectangle visibleRect;
-
-  void setCameraPosition(int newX, int newY)
-  {
-    if(newX != _x || newY != _y)
-      dirty = true;
-    _x = newX;
-    _y = newY;
-
-    if(visibleRect == null)
-    {
-      visibleRect = new Rectangle(_x, _y, STAGE.width, STAGE.height);
-    }
-    else
-    {
-      visibleRect.left = _x;
-      visibleRect.top = _y;
-      visibleRect.width = STAGE.width;
-      visibleRect.height = STAGE.height;
-    }
-  }
-
-  int getX() => _x;
-
-  int getY() => _y;
 }
