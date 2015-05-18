@@ -137,13 +137,15 @@ class StreetLayer extends Sprite {
 			if(decoMap['h_flip'] == true) {
 				deco.width = -decoMap['w'];
 				deco.x += decoMap['w'];
-			} else {
+			}
+			else {
 				deco.width = decoMap['w'];
 			}
 			if(decoMap['v_flip'] == true) {
 				deco.height = -decoMap['h'];
 				deco.y += decoMap['h'];
-			} else {
+			}
+			else {
 				deco.height = decoMap['h'];
 			}
 
