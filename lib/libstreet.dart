@@ -18,9 +18,11 @@ class Street extends DisplayObjectContainer {
   Map _streetDef;
 
   Camera camera = new Camera();
+  Sprite _gradient;
 
   Street(final this._streetDef) {
     camera.street = this;
+    _gradient = _generateGradient();
   }
 
   /// returns true if the decos are loaded into memory
@@ -89,17 +91,7 @@ class Street extends DisplayObjectContainer {
       if (loaded == false)
         throw("Decos not loaded!");
 
-      Bitmap b_deco = new Bitmap(RESOURCES.getBitmapData(decoMap['filename']));
-
-      Deco deco = new Deco()
-        ..addChild(b_deco);
-
-      deco
-        ..pivotX = deco.width/2
-        ..pivotY = deco.height
-        ..x = decoMap['x']
-        ..y = decoMap['y'];
-
+      Deco deco = new Deco(decoMap);
       if(layerDef['name'] == 'middleground')
       {
         //middleground has different layout needs
@@ -107,61 +99,16 @@ class Street extends DisplayObjectContainer {
         deco.x += layerDef['w'] ~/ 2;
       }
 
-      // Set width
-      if (decoMap['h_flip'] == true)
-        deco.width = -decoMap['w'];
-      else
-        deco.width = decoMap['w'];
-      // Set height
-      if (decoMap['v_flip'] == true)
-        deco.height = -decoMap['h'];
-      else
-        deco.height = decoMap['h'];
-
-      if (decoMap['r'] != null) {
-        deco.rotation = decoMap['r'] * Math.PI/180;
-      }
-
-      deco.onMouseClick.listen((_) {
-        print(layerDef['name'] + ' ' + decoMap['filename']);
-      });
-
       // Add to the layer
-      newLayer.addChild(deco);
+      newLayer.addDeco(deco);
     }
 
-    // Apply filters
-    if (layerDef['filters'] != null) {
-      for (String filter in layerDef['filters'].keys) {
-        if (filter == 'blur')
-          newLayer.filters.add(new BlurFilter(layerDef['filters']['blur']));
-
-        if (filter == 'brightness') {}
-         // layerFilter.adjustBrightness(layerDef['filters']['brightness'])
-        ;
-
-        if (filter == 'contrast')
-        //  layerFilter.adjustContrast(layerDef['filters']['contrast'])
-        ;
-
-        if (filter == 'saturation')
-        //  layerFilter.adjustSaturation(layerDef['filters']['saturation'])
-        ;
-
-        if (filter == 'tintColor') {
-          int color = layerDef['filters']['tintColor'];
-          num amount = layerDef['filters']['tintAmount'];
-          //newLayer.filters.add(new TintFilter.fromColor(color));
-          //layerFilter.adjustColoration(Color.SlateBlue, amount);
-        }
-      }
-    }
-
+    newLayer.harden();
     return newLayer;
   }
 
   /// Returns a DisplayObject containing the background gradient of the street.
-  DisplayObject get _gradient {
+  DisplayObject _generateGradient() {
     var shape = new Shape();
     shape.graphics.rect(0, 0, bounds.width, bounds.height);
     shape.graphics.fillGradient(
@@ -170,6 +117,15 @@ class Street extends DisplayObjectContainer {
           ..addColorStop(1, int.parse('0xFF' + _streetDef['gradient']['bottom']))
     );
     shape.applyCache(0,0, bounds.width, bounds.height);
-    return shape;
+    return new Sprite()..addChild(shape);
   }
+
+  // override render to support parallax
+  @override render(RenderState renderState) {
+    _gradient.x = -camera.x;
+    _gradient.y = -camera.y;
+    super.render(renderState);
+  }
+
+
 }
