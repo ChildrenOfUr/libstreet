@@ -129,6 +129,34 @@ class Street extends DisplayObjectContainer {
       // Add to the layer
       newLayer.addChild(deco);
     }
+
+    // Apply filters
+    if (layerDef['filters'] != null) {
+      for (String filter in layerDef['filters'].keys) {
+        if (filter == 'blur')
+          newLayer.filters.add(new BlurFilter(layerDef['filters']['blur']));
+
+        if (filter == 'brightness') {}
+         // layerFilter.adjustBrightness(layerDef['filters']['brightness'])
+        ;
+
+        if (filter == 'contrast')
+        //  layerFilter.adjustContrast(layerDef['filters']['contrast'])
+        ;
+
+        if (filter == 'saturation')
+        //  layerFilter.adjustSaturation(layerDef['filters']['saturation'])
+        ;
+
+        if (filter == 'tintColor') {
+          int color = layerDef['filters']['tintColor'];
+          num amount = layerDef['filters']['tintAmount'];
+          //newLayer.filters.add(new TintFilter.fromColor(color));
+          //layerFilter.adjustColoration(Color.SlateBlue, amount);
+        }
+      }
+    }
+
     return newLayer;
   }
 
