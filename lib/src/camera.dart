@@ -14,8 +14,8 @@ class Camera {
     if (x <= 0)
       x = 0;
 
-    if (x + STAGE.stageWidth >= street.bounds.width)
-      x = street.bounds.width - STAGE.stageWidth;
+    if (x + street.stage.stageWidth >= street.bounds.width)
+      x = street.bounds.width - street.stage.stageWidth;
 
     _x = x;
   }
@@ -23,8 +23,8 @@ class Camera {
   set y(num y) {
     if (y <= 0)
       y = 0;
-    if (y + STAGE.stageHeight >= street.bounds.height)
-      y = street.bounds.height - STAGE.stageHeight;
+    if (y + street.stage.stageHeight >= street.bounds.height)
+      y = street.bounds.height - street.stage.stageHeight;
 
     _y = y;
   }

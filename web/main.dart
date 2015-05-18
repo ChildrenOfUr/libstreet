@@ -15,7 +15,7 @@ main() async {
 	print('${STAGE.stageWidth} ${STAGE.stageHeight}');
 
 	// load the JSON
-	RESOURCES.addTextFile('groddle', 'groddle.json');
+	RESOURCES.addTextFile('groddle', 'GLI3272LOTD1B1F.json');
 	await RESOURCES.load();
 
 	// We turn the JSON into a map before we generate a street from it.
@@ -39,4 +39,10 @@ main() async {
 		if(event.keyCode == 115)
 			groddle.camera.y += 30;
 	});
+
+
+
+
+
+
 }

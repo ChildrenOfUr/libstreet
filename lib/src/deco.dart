@@ -2,33 +2,35 @@ part of libstreet;
 
 
 class Deco extends Sprite {
-  Map decoDef;
-  Deco(final this.decoDef) {
-    Bitmap b_deco = new Bitmap(RESOURCES.getBitmapData(decoDef['filename']));
-    this.addChild(b_deco);
+  StreetLayer layer;
+  Map def;
+
+  int z;
+
+  Deco._(final this.def, {this.layer}) {
+    Bitmap b_deco = new Bitmap(RESOURCES.getBitmapData(def['filename']));
+
+    addChild(b_deco);
 
     pivotX = width/2;
     pivotY = height;
-    x = decoDef['x'];
-    y = decoDef['y'];
+    x = def['x'];
+    y = def['y'];
+    z = def['z'];
 
     // Set width
-    if (decoDef['h_flip'] == true)
-      width = -decoDef['w'];
+    if (def['h_flip'] == true)
+      width = -def['w'];
     else
-      width = decoDef['w'];
+      width = def['w'];
     // Set height
-    if (decoDef['v_flip'] == true)
-      height = -decoDef['h'];
+    if (def['v_flip'] == true)
+      height = -def['h'];
     else
-      height = decoDef['h'];
+      height = def['h'];
 
-    if (decoDef['r'] != null) {
-      rotation = decoDef['r'] * Math.PI/180;
+    if (def['r'] != null) {
+      rotation = def['r'] * Math.PI/180;
     }
   }
-
-
-
-
 }
