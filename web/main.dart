@@ -27,7 +27,7 @@ main() async {
 	Street groddle = new Street(groddleDef);
 	STAGE.addChild(groddle);
 
-	await groddle.load();
+	await groddle.activate();
 
 	document.onKeyPress.listen((event) {
 		if(event.keyCode == 97)
@@ -38,9 +38,5 @@ main() async {
 			groddle.camera.y -= 30;
 		if(event.keyCode == 115)
 			groddle.camera.y += 30;
-
-		groddle.update();
 	});
-
-	groddle.update();
 }
