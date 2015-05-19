@@ -1,6 +1,6 @@
 import 'package:libstreet/libstreet.dart';
 import 'package:stagexl/stagexl.dart';
-import 'dart:html';
+import 'dart:html' as html;
 import 'dart:convert';
 
 main() async {
@@ -8,7 +8,7 @@ main() async {
 
 	// Setting up the stageXL environment
 	RESOURCES = new ResourceManager();
-	STAGE = new Stage(querySelector('canvas'));
+	STAGE = new Stage(html.querySelector('canvas'));
 	new RenderLoop()
 		..addStage(STAGE);
 
@@ -29,7 +29,7 @@ main() async {
 
 	await groddle.activate();
 
-	document.onKeyPress.listen((event) {
+	html.document.onKeyPress.listen((event) {
 		if(event.keyCode == 97)
 			groddle.camera.x -= 30;
 		if(event.keyCode == 100)
@@ -40,9 +40,5 @@ main() async {
 			groddle.camera.y += 30;
 	});
 
-
-
-
-
-
+	print(groddle.bounds);
 }

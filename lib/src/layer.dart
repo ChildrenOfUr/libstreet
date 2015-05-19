@@ -10,8 +10,6 @@ class StreetLayer extends Layer {
   num get z => def['z'];
 
   StreetLayer._(final this.def, {this.street}) {
-    _decoHolder.mask = new Mask.rectangle(0, 0, width, height);
-
     addChild(_decoHolder);
 
     // Sort by z values
@@ -41,23 +39,25 @@ class StreetLayer extends Layer {
   applyFilters() {
     // Apply filters
     print('${def['name']} ${def['filters']}');
+
     ColorMatrixFilter layerFilter = new ColorMatrixFilter.identity();
     for (String filter in def['filters'].keys) {
-      if (filter == 'brightness') {
-        layerFilter.adjustBrightness(def['filters']['brightness'] / 100);
-      }
-      if (filter == 'saturation') {
-        layerFilter.adjustSaturation(def['filters']['saturation'] / 100);
-      }
-      if (filter == 'contrast') {
-        layerFilter.adjustContrast(def['filters']['contrast'] / 100);
-      }
-      if (filter == 'tintAmount' && def['filters']['tintColor'] != null) {
+      if (filter == 'tintColor') {
         int color = def['filters']['tintColor'];
         num amount = def['filters']['tintAmount'];
-        ColorMatrixFilter colorFilter = new ColorMatrixFilter.identity()
-          ..adjustColoration(color, amount / 100);
-        _decoHolder.filters.add(colorFilter);
+        if (amount == null)
+          layerFilter.adjustColoration(color);
+        else
+          layerFilter.adjustColoration(color, amount/255);
+      }
+      if (filter == 'brightness') {
+        layerFilter.adjustBrightness(def['filters']['brightness'] / 255);
+      }
+      if (filter == 'saturation') {
+        layerFilter.adjustSaturation(def['filters']['saturation'] / 255);
+      }
+      if (filter == 'contrast') {
+        layerFilter.adjustContrast(def['filters']['contrast'] / 255);
       }
       if (filter == 'blur') {
         _decoHolder.filters.add(new BlurFilter(def['filters']['blur']));
@@ -70,8 +70,20 @@ class StreetLayer extends Layer {
 }
 
 
-class ActorLayer extends Layer {}
+class ActorLayer extends Sprite {}
 
+class CollisionLayer extends Sprite {
+  CollisionLayer(List lines) {
+    for (Map lineMap in lines) {
+      print(lineMap['endpoints']);
+      CollisionLine line = new CollisionLine(
+          new Point(lineMap['endpoints'].first['x'],lineMap['endpoints'].first['y']),
+          new Point(lineMap['endpoints'].last['x'],lineMap['endpoints'].last['y']));
+      addChild(line);
+    }
+  }
+
+}
 
 /// Parent layer class, handles parallax
 class Layer extends Sprite {

@@ -5,15 +5,19 @@ import 'dart:math' as Math;
 part 'src/deco.dart';
 part 'src/layer.dart';
 part 'src/camera.dart';
+part 'src/line.dart';
 
 ResourceManager RESOURCES;
 Stage STAGE;
+
 
 class Street extends DisplayObjectContainer {
   /// Map of the street's static properties
   Map def;
 
   Camera camera = new Camera();
+  DisplayObjectContainer actorLayer;
+  DisplayObjectContainer collisionLayer;
 
   String get label => def['label'];
   String get tsid => def['tsid'];
@@ -47,7 +51,16 @@ class Street extends DisplayObjectContainer {
 
     for (Map layerMap in layerList) {
       addLayer(layerMap);
+      // After appending 'middleground' insert the actor layer.
+      if (layerMap['name'] == 'middleground') {
+        actorLayer = new ActorLayer();
+        addChild(actorLayer);
+      }
     }
+    collisionLayer = new CollisionLayer(
+      new List.from(def['dynamic']['layers']['middleground']['platformLines'])
+    );
+    addChild(collisionLayer);
   }
 
   /// Loads all the decos on this [Street] into memory
@@ -95,6 +108,16 @@ class Street extends DisplayObjectContainer {
   @override render(RenderState renderState) {
     _gradient.x = -camera.x;
     _gradient.y = -camera.y;
+
+    if (actorLayer != null) {
+      actorLayer.x = -camera.x;
+      actorLayer.y = -camera.y;
+    }
+
+    if (collisionLayer != null) {
+      collisionLayer.x = -camera.x - bounds.left;
+      collisionLayer.y = -camera.y - bounds.top;
+    }
 
     super.render(renderState);
   }
