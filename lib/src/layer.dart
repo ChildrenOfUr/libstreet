@@ -37,9 +37,6 @@ class StreetLayer extends Layer {
   }
 
   applyFilters() {
-    // Apply filters
-    print('${def['name']} ${def['filters']}');
-
     ColorMatrixFilter layerFilter = new ColorMatrixFilter.identity();
     for (String filter in def['filters'].keys) {
       if (filter == 'tintColor') {
@@ -80,8 +77,8 @@ class CollisionLayer extends Sprite {
     List ladders = new List.from(street.def['dynamic']['layers']['middleground']['ladders']);
     for (Map ladderMap in ladders) {
       CollisionRect ladder = new CollisionRect(
-          new Point(ladderMap['x'],ladderMap['y']),
-          new Point(ladderMap['x'] - ladderMap['w'],ladderMap['y'] - ladderMap['h'])
+          new Point(ladderMap['x'] - ladderMap['w']/2, ladderMap['y'] - ladderMap['h']),
+          new Point(ladderMap['x'] + ladderMap['w']/2, ladderMap['y'])
       );
       addChild(ladder);
     }

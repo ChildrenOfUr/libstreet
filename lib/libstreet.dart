@@ -50,13 +50,14 @@ class Street extends DisplayObjectContainer {
       ..sort((Map A, Map B) => A['z'].compareTo(B['z']));
 
     for (Map layerMap in layerList) {
-      addLayer(layerMap);
+      addDecoLayer(layerMap);
       // After appending 'middleground' insert the actor layer.
       if (layerMap['name'] == 'middleground') {
         actorLayer = new ActorLayer();
         addChild(actorLayer);
       }
     }
+    // After all deco,and actor layers, add the collision layer.
     collisionLayer = new CollisionLayer(this);
     addChild(collisionLayer);
   }
@@ -82,7 +83,7 @@ class Street extends DisplayObjectContainer {
   }
 
   /// Adds a layer defined by the layerDef to the STAGE
-  StreetLayer addLayer(Map layerDef) {
+  StreetLayer addDecoLayer(Map layerDef) {
     StreetLayer newLayer = new StreetLayer._(layerDef, street: this);
       //..applyFilters();
     addChild(newLayer);
@@ -90,6 +91,7 @@ class Street extends DisplayObjectContainer {
   }
 
   /// Returns a DisplayObject containing the background gradient of the street.
+  /// TODO make this its own class
   DisplayObject _generateGradient() {
     var shape = new Shape();
     shape.graphics.rect(0, 0, bounds.width, bounds.height);
