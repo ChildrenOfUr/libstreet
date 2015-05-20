@@ -15,10 +15,9 @@ class CollisionLine extends Sprite{
     B.y = b.y;
 
     Shape shape = new Shape();
-    shape.graphics.beginPath();
-    shape.graphics.rect(0,-2, 5, 5);
+    shape.graphics.rect(0,-2, 1, 5);
     shape.graphics.fillColor(Color.White);
-    shape.applyCache(0, -2, 5, 5);
+    shape.applyCache(0, -2, 1, 5);
     _line.addChild(shape);
 
     addChild(_line);
@@ -39,7 +38,7 @@ class CollisionLine extends Sprite{
   render(RenderState renderState) {
     _line.x = A.x;
     _line.y = A.y;
-    _line.width = new Point(A.x, A.y).distanceTo(new Point(B.x,B.y));
+    _line.children.first.width = new Point(A.x, A.y).distanceTo(new Point(B.x,B.y));
     _line.rotation = Math.atan2(B.y-A.y, B.x-A.x);
     super.render(renderState);
   }

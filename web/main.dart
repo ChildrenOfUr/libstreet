@@ -29,6 +29,7 @@ main() async {
 
 	await groddle.activate();
 
+	// WASD
 	html.document.onKeyPress.listen((event) {
 		if(event.keyCode == 97)
 			groddle.camera.x -= 30;
