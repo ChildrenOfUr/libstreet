@@ -2,7 +2,7 @@ part of libstreet;
 
 
 class Deco extends Sprite {
-  StreetLayer layer;
+  DecoLayer layer;
   Map def;
 
   int z;

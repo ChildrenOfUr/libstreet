@@ -1,40 +1,42 @@
 part of libstreet;
 
-class StreetLayer extends Layer {
+class DecoLayer extends Layer {
   Sprite _decoHolder = new Sprite();
   Street street;
   Map def;
 
+  @override
   num get width => def['w'];
+  @override
   num get height => def['h'];
   num get z => def['z'];
 
-  StreetLayer._(final this.def, {this.street}) {
+  DecoLayer(final this.def, {this.street}) {
     addChild(_decoHolder);
 
-    // Sort by z values
+    // Sort decos by z value
     List decoList = new List.from(def['decos'])
       ..sort((Map A, Map B) => A['z'].compareTo(B['z']));
 
+    // Create and append decos
     for (Map decoMap in decoList) {
       if (street.loaded == false) throw ("Decos not loaded!");
-
       Deco deco = new Deco._(decoMap, layer: this);
       if (def['name'] == 'middleground') {
         //middleground has different layout needs
         deco.y += height;
         deco.x += width ~/ 2;
       }
-
-      // Add to the layer
       addDeco(deco);
     }
+
     applyFilters();
   }
 
   addDeco(Deco deco) {
     _decoHolder.addChild(deco);
   }
+
 
   applyFilters() {
     ColorMatrixFilter layerFilter = new ColorMatrixFilter.identity();
@@ -64,41 +66,7 @@ class StreetLayer extends Layer {
 
     _decoHolder.applyCache(0,0, width, height);
   }
-}
 
-
-class ActorLayer extends Sprite {}
-
-class CollisionLayer extends Sprite {
-  Street street;
-  CollisionLayer(this.street) {
-
-    // Add ladders.
-    List ladders = new List.from(street.def['dynamic']['layers']['middleground']['ladders']);
-    for (Map ladderMap in ladders) {
-      CollisionRect ladder = new CollisionRect(
-          new Point(ladderMap['x'] - ladderMap['w']/2, ladderMap['y'] - ladderMap['h']),
-          new Point(ladderMap['x'] + ladderMap['w']/2, ladderMap['y'])
-      );
-      addChild(ladder);
-    }
-
-    // Add collision lines.
-    List lines = new List.from(street.def['dynamic']['layers']['middleground']['platformLines']);
-    for (Map lineMap in lines) {
-      CollisionLine line = new CollisionLine(
-          new Point(lineMap['endpoints'].first['x'],lineMap['endpoints'].first['y']),
-          new Point(lineMap['endpoints'].last['x'],lineMap['endpoints'].last['y']));
-      addChild(line);
-    }
-
-  }
-
-}
-
-/// Parent layer class, handles parallax
-class Layer extends Sprite {
-  Street street;
   // override render to support parallax
   @override render(RenderState renderState) {
     num currentPercentX =
@@ -111,4 +79,41 @@ class Layer extends Sprite {
     y = -(height - stage.stageHeight) * currentPercentY;
     super.render(renderState);
   }
+}
+
+class GradientLayer extends Sprite {}
+
+class ActorLayer extends Sprite {}
+
+class CollisionLayer extends Sprite {
+  Street street;
+  CollisionLayer(this.street) {
+    // Add ladders.
+    List ladders = new List.from(street.def['dynamic']['layers']['middleground']['ladders']);
+    for (Map ladderMap in ladders) {
+      Ladder ladder = new Ladder(
+          ladderMap['id'],
+          new Point(ladderMap['x'] - ladderMap['w']/2, ladderMap['y'] - ladderMap['h']),
+          new Point(ladderMap['x'] + ladderMap['w']/2, ladderMap['y'])
+      );
+      addChild(ladder);
+    }
+
+    // Add collision lines.
+    List lines = new List.from(street.def['dynamic']['layers']['middleground']['platformLines']);
+    for (Map lineMap in lines) {
+      Platform line = new Platform(
+          lineMap['id'],
+          new Point(lineMap['endpoints'].first['x'],lineMap['endpoints'].first['y']),
+          new Point(lineMap['endpoints'].last['x'],lineMap['endpoints'].last['y']));
+      addChild(line);
+    }
+  }
+}
+
+
+
+/// Parent layer class, handles parallax
+class Layer extends Sprite {
+  Street street;
 }

@@ -1,18 +1,46 @@
 part of libstreet;
 
+class Platform extends CollisionLine {
+  String id;
+  // these colors determine the line's colors.
+  int primaryColor = Color.Purple;
+  int secondaryColor = Color.MediumPurple;
+  Platform(this.id, Point a, Point b) : super(a,b);
+}
 
+class Ladder extends CollisionRect {
+  String id;
+  // these colors determine the rectangle's colors.
+  int primaryColor = Color.Green;
+  int secondaryColor = Color.Yellow;
+  Ladder(this.id, Point a, Point b) : super(a,b);
+}
 
+class Wall extends CollisionLine {
+  String id;
+  // these colors determine the line's colors.
+  int primaryColor = Color.Red;
+  int secondaryColor = Color.Red;
+  Wall(this.id, Point a, Point b) : super(a,b);
+}
 
 
 class CollisionRect extends Sprite {
-  AnchorCircle A = new AnchorCircle(5, Color.Green, Color.White, strokeWidth: 5);
-  AnchorCircle B = new AnchorCircle(5, Color.Yellow, Color.White, strokeWidth: 5);
+  AnchorCircle A;
+  AnchorCircle B;
 
   bool canEdit = true;
 
-  Sprite _rect = new Sprite();
+  Sprite _rect;
+
+  num primaryColor = Color.Black;
+  num secondaryColor = Color.Black;
 
   CollisionRect (Point a, Point b) {
+    _rect = new Sprite();
+    A = new AnchorCircle(5, primaryColor, Color.White, strokeWidth: 5);
+    B = new AnchorCircle(5, secondaryColor, Color.White, strokeWidth: 5);
+
     A.x = a.x;
     A.y = a.y;
 
@@ -65,14 +93,20 @@ class CollisionRect extends Sprite {
 
 
 class CollisionLine extends Sprite{
-  AnchorCircle A = new AnchorCircle(5, Color.Purple, Color.White, strokeWidth: 5);
-  AnchorCircle B = new AnchorCircle(5, Color.Cyan, Color.White, strokeWidth: 5);
+  AnchorCircle A;
+  AnchorCircle B;
 
   bool canEdit = true;
 
   Sprite _line = new Sprite();
 
+  num primaryColor = Color.Black;
+  num secondaryColor = Color.Black;
+
   CollisionLine(Point a, Point b) {
+    A = new AnchorCircle(5, primaryColor, Color.White, strokeWidth: 5);
+    B = new AnchorCircle(5, secondaryColor, Color.White, strokeWidth: 5);
+
     A.x = a.x;
     A.y = a.y;
 
@@ -89,15 +123,14 @@ class CollisionLine extends Sprite{
     addChild(A);
     addChild(B);
 
-
     _line.onMouseDown.listen((_) {
       if (canEdit)
-      this.startDrag();
+      startDrag();
     });
 
     _line.onMouseUp.listen((_) {
       if (canEdit)
-      this.stopDrag();
+      stopDrag();
     });
   }
 

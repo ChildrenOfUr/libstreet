@@ -10,7 +10,6 @@ part 'src/shapes.dart';
 ResourceManager RESOURCES;
 Stage STAGE;
 
-
 class Street extends DisplayObjectContainer {
   /// Map of the street's static properties
   Map def;
@@ -29,7 +28,6 @@ class Street extends DisplayObjectContainer {
       (def['dynamic']['l'].abs() + def['dynamic']['r'].abs()).toInt(),
       (def['dynamic']['t'].abs() + def['dynamic']['b'].abs()).toInt()
   );
-
 
   /// returns true if the decos are loaded into memory
   bool get loaded => _loaded;
@@ -77,14 +75,12 @@ class Street extends DisplayObjectContainer {
       }
     }
     await RESOURCES.load();
-    if (RESOURCES.pendingResources.isNotEmpty)
-      throw('Could not load Decos: ${RESOURCES.pendingResources}');
     _loaded = true;
   }
 
   /// Adds a layer defined by the layerDef to the STAGE
-  StreetLayer addDecoLayer(Map layerDef) {
-    StreetLayer newLayer = new StreetLayer._(layerDef, street: this);
+  DecoLayer addDecoLayer(Map layerDef) {
+    DecoLayer newLayer = new DecoLayer(layerDef, street: this);
       //..applyFilters();
     addChild(newLayer);
     return newLayer;
@@ -92,7 +88,7 @@ class Street extends DisplayObjectContainer {
 
   /// Returns a DisplayObject containing the background gradient of the street.
   /// TODO make this its own class
-  DisplayObject _generateGradient() {
+  GradientLayer _generateGradient() {
     var shape = new Shape();
     shape.graphics.rect(0, 0, bounds.width, bounds.height);
     shape.graphics.fillGradient(
@@ -101,7 +97,7 @@ class Street extends DisplayObjectContainer {
           ..addColorStop(1, int.parse('0xFF' + def['gradient']['bottom']))
     );
     shape.applyCache(0,0, bounds.width, bounds.height);
-    return new Sprite()..addChild(shape);
+    return new GradientLayer()..addChild(shape);
   }
 
   // override render to offset gradient
@@ -109,11 +105,12 @@ class Street extends DisplayObjectContainer {
     _gradient.x = -camera.x;
     _gradient.y = -camera.y;
 
+    // The origin of a street is not top-left,
+    // add bounds to compensate
     if (actorLayer != null) {
-      actorLayer.x = -camera.x;
-      actorLayer.y = -camera.y;
+      actorLayer.x = -camera.x - bounds.left;
+      actorLayer.y = -camera.y - bounds.top;
     }
-
     if (collisionLayer != null) {
       collisionLayer.x = -camera.x - bounds.left;
       collisionLayer.y = -camera.y - bounds.top;
@@ -121,6 +118,5 @@ class Street extends DisplayObjectContainer {
 
     super.render(renderState);
   }
-  Sprite _gradient;
-
+  GradientLayer _gradient;
 }

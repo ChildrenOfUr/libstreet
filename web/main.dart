@@ -12,8 +12,6 @@ main() async {
 	new RenderLoop()
 		..addStage(STAGE);
 
-	print('${STAGE.stageWidth} ${STAGE.stageHeight}');
-
 	// load the JSON
 	RESOURCES.addTextFile('groddle', 'groddle.json');
 	await RESOURCES.load();
@@ -41,14 +39,5 @@ main() async {
 			groddle.camera.y += 30;
 	});
 
-	print(groddle.bounds);
-
-
-
-
-
-
-
-
-
+	groddle.children.forEach((child) => child.onMouseClick.listen((_) {print(child);}));
 }
