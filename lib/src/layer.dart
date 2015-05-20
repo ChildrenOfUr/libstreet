@@ -73,14 +73,28 @@ class StreetLayer extends Layer {
 class ActorLayer extends Sprite {}
 
 class CollisionLayer extends Sprite {
-  CollisionLayer(List lines) {
+  Street street;
+  CollisionLayer(this.street) {
+
+    // Add ladders.
+    List ladders = new List.from(street.def['dynamic']['layers']['middleground']['ladders']);
+    for (Map ladderMap in ladders) {
+      CollisionRect ladder = new CollisionRect(
+          new Point(ladderMap['x'],ladderMap['y']),
+          new Point(ladderMap['x'] - ladderMap['w'],ladderMap['y'] - ladderMap['h'])
+      );
+      addChild(ladder);
+    }
+
+    // Add collision lines.
+    List lines = new List.from(street.def['dynamic']['layers']['middleground']['platformLines']);
     for (Map lineMap in lines) {
-      print(lineMap['endpoints']);
       CollisionLine line = new CollisionLine(
           new Point(lineMap['endpoints'].first['x'],lineMap['endpoints'].first['y']),
           new Point(lineMap['endpoints'].last['x'],lineMap['endpoints'].last['y']));
       addChild(line);
     }
+
   }
 
 }
@@ -98,7 +112,6 @@ class Layer extends Sprite {
     //modify left and top
     x = -(width - stage.stageWidth) * currentPercentX;
     y = -(height - stage.stageHeight) * currentPercentY;
-
     super.render(renderState);
   }
 }

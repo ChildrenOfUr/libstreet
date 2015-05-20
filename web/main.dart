@@ -15,7 +15,7 @@ main() async {
 	print('${STAGE.stageWidth} ${STAGE.stageHeight}');
 
 	// load the JSON
-	RESOURCES.addTextFile('groddle', 'GLI3272LOTD1B1F.json');
+	RESOURCES.addTextFile('groddle', 'groddle.json');
 	await RESOURCES.load();
 
 	// We turn the JSON into a map before we generate a street from it.

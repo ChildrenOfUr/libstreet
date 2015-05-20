@@ -5,7 +5,7 @@ import 'dart:math' as Math;
 part 'src/deco.dart';
 part 'src/layer.dart';
 part 'src/camera.dart';
-part 'src/line.dart';
+part 'src/shapes.dart';
 
 ResourceManager RESOURCES;
 Stage STAGE;
@@ -57,9 +57,7 @@ class Street extends DisplayObjectContainer {
         addChild(actorLayer);
       }
     }
-    collisionLayer = new CollisionLayer(
-      new List.from(def['dynamic']['layers']['middleground']['platformLines'])
-    );
+    collisionLayer = new CollisionLayer(this);
     addChild(collisionLayer);
   }
 
