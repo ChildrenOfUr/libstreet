@@ -1,10 +1,11 @@
 import 'package:libstreet/libstreet.dart';
 import 'package:stagexl/stagexl.dart';
 import 'dart:html' as html;
+import 'dart:async';
 import 'dart:convert';
 
 main() async {
-	StageXL.stageOptions.renderEngine = RenderEngine.WebGL;
+	//StageXL.stageOptions.renderEngine = RenderEngine.WebGL;
 
 	// Setting up the stageXL environment
 	RESOURCES = new ResourceManager();
@@ -12,20 +13,30 @@ main() async {
 	new RenderLoop()
 		..addStage(STAGE);
 
-	// load the JSON
-	RESOURCES.addTextFile('groddle', 'groddle.json');
-	await RESOURCES.load();
+  Street groddle;
+  // load the JSON
+  RESOURCES.addTextFile('groddle', 'groddle.json');
+  await RESOURCES.load();
 
-	// We turn the JSON into a map before we generate a street from it.
-	// This allows us to dynamically create Maps and render Streets
-	// from them without a JSON conversion process.
-	Map groddleDef = JSON.decode(RESOURCES.getTextFile('groddle'));
+  //new Timer.periodic(new Duration(seconds:10), (_) async {
+    print('Loop start');
+    STAGE.removeChildren();
 
-	// Render the Street
-	Street groddle = new Street(groddleDef);
-	STAGE.addChild(groddle);
+		if (groddle != null)
+			groddle.destroy();
 
-	await groddle.activate();
+    // We turn the JSON into a map before we generate a street from it.
+    // This allows us to dynamically create Maps and render Streets
+    // from them without a JSON conversion process.
+    Map groddleDef = JSON.decode(RESOURCES.getTextFile('groddle'));
+
+    // Render the Street
+    groddle = new Street(groddleDef);
+    STAGE.addChild(groddle);
+
+    await groddle.activate();
+    print('Loop end');
+  //});
 
 	// WASD
 	html.document.onKeyPress.listen((event) {
@@ -39,5 +50,10 @@ main() async {
 			groddle.camera.y += 30;
 	});
 
-	groddle.children.forEach((child) => child.onMouseClick.listen((_) {print(child);}));
+	html.querySelector('#toggleStreet').onClick.listen((_) {
+    print('bam');
+    groddle.destroy();
+  });
+
+
 }

@@ -1,7 +1,8 @@
 part of libstreet;
 
+
 class DecoLayer extends Layer {
-  Sprite _decoHolder = new Sprite();
+  //Sprite _decoHolder = new Sprite();
   Street street;
   Map def;
 
@@ -12,8 +13,6 @@ class DecoLayer extends Layer {
   num get z => def['z'];
 
   DecoLayer(final this.def, {this.street}) {
-    addChild(_decoHolder);
-
     // Sort decos by z value
     List decoList = new List.from(def['decos'])
       ..sort((Map A, Map B) => A['z'].compareTo(B['z']));
@@ -21,7 +20,7 @@ class DecoLayer extends Layer {
     // Create and append decos
     for (Map decoMap in decoList) {
       if (street.loaded == false) throw ("Decos not loaded!");
-      Deco deco = new Deco._(decoMap, layer: this);
+      Deco deco = new Deco(decoMap, layer: this);
       if (def['name'] == 'middleground') {
         //middleground has different layout needs
         deco.y += height;
@@ -34,7 +33,7 @@ class DecoLayer extends Layer {
   }
 
   addDeco(Deco deco) {
-    _decoHolder.addChild(deco);
+    addChild(deco);
   }
 
 
@@ -59,24 +58,26 @@ class DecoLayer extends Layer {
         layerFilter.adjustContrast(def['filters']['contrast'] / 255);
       }
       if (filter == 'blur') {
-        _decoHolder.filters.add(new BlurFilter(def['filters']['blur']));
+        filters.add(new BlurFilter(def['filters']['blur']));
       }
     }
-    _decoHolder.filters.add(layerFilter);
-
-    _decoHolder.applyCache(0,0, width, height);
+    filters.add(layerFilter);
+    applyCache(0,0, width, height);
+    //children.toList().forEach((Deco deco) => deco.dispose());
   }
 
   // override render to support parallax
   @override render(RenderState renderState) {
-    num currentPercentX =
-    (street.camera.x) / (street.bounds.width - stage.stageWidth);
-    num currentPercentY =
-    (street.camera.y) / (street.bounds.height - stage.stageHeight);
+    if (stage != null) {
+      num currentPercentX =
+      (street.camera.x) / (street.bounds.width - stage.stageWidth);
+      num currentPercentY =
+      (street.camera.y) / (street.bounds.height - stage.stageHeight);
 
-    //modify left and top
-    x = -(width - stage.stageWidth) * currentPercentX;
-    y = -(height - stage.stageHeight) * currentPercentY;
+      //modify left and top
+      x = -(width - stage.stageWidth) * currentPercentX;
+      y = -(height - stage.stageHeight) * currentPercentY;
+    }
     super.render(renderState);
   }
 }
