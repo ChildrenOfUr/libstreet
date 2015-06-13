@@ -2,7 +2,7 @@ part of libstreet;
 
 
 class DecoLayer extends Layer {
-  //Sprite _decoHolder = new Sprite();
+  Sprite _decoHolder = new Sprite();
   Street street;
   Map def;
 

@@ -18,13 +18,6 @@ main() async {
   RESOURCES.addTextFile('groddle', 'groddle.json');
   await RESOURCES.load();
 
-  //new Timer.periodic(new Duration(seconds:10), (_) async {
-    print('Loop start');
-    STAGE.removeChildren();
-
-		if (groddle != null)
-			groddle.destroy();
-
     // We turn the JSON into a map before we generate a street from it.
     // This allows us to dynamically create Maps and render Streets
     // from them without a JSON conversion process.
@@ -33,10 +26,9 @@ main() async {
     // Render the Street
     groddle = new Street(groddleDef);
     STAGE.addChild(groddle);
-
     await groddle.activate();
-    print('Loop end');
-  //});
+
+	print(groddle.height.toString() + ' ' + groddle.width.toString());
 
 	// WASD
 	html.document.onKeyPress.listen((event) {
@@ -49,11 +41,4 @@ main() async {
 		if(event.keyCode == 115)
 			groddle.camera.y += 30;
 	});
-
-	html.querySelector('#toggleStreet').onClick.listen((_) {
-    print('bam');
-    groddle.destroy();
-  });
-
-
 }

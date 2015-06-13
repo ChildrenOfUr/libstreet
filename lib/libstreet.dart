@@ -35,7 +35,7 @@ class Street extends DisplayObjectContainer {
 
   Street(final this.def) {
     camera.street = this;
-    //_gradient = _generateGradient();
+    _gradient = _generateGradient();
   }
 
   destroy() {
@@ -55,7 +55,7 @@ class Street extends DisplayObjectContainer {
   // Makes sure that the decos are loaded, then adds the street to the stage
   activate() async {
     await loadDecos();
-    //this.addChild(_gradient);
+    this.addChild(_gradient);
 
     // Sort by z values
     List layerList = new List.from(def['dynamic']['layers'].values)
@@ -70,8 +70,8 @@ class Street extends DisplayObjectContainer {
       }
     }
     // After all deco,and actor layers, add the collision layer.
-    //collisionLayer = new CollisionLayer(this);
-    //addChild(collisionLayer);
+    collisionLayer = new CollisionLayer(this);
+    addChild(collisionLayer);
   }
 
   /// Loads all the decos on this [Street] into memory
@@ -94,8 +94,8 @@ class Street extends DisplayObjectContainer {
 
   /// Adds a layer defined by the layerDef to the STAGE
   DecoLayer addDecoLayer(Map layerDef) {
-    DecoLayer newLayer = new DecoLayer(layerDef, street: this);
-      //..applyFilters();
+    DecoLayer newLayer = new DecoLayer(layerDef, street: this)
+      ..applyFilters();
     addChild(newLayer);
     return newLayer;
   }
@@ -116,8 +116,8 @@ class Street extends DisplayObjectContainer {
 
   // override render to offset gradient
   @override render(RenderState renderState) {
-    //_gradient.x = -camera.x;
-    //_gradient.y = -camera.y;
+    _gradient.x = -camera.x;
+    _gradient.y = -camera.y;
 
     // The origin of a street is not top-left,
     // add bounds to compensate
@@ -132,5 +132,5 @@ class Street extends DisplayObjectContainer {
 
     super.render(renderState);
   }
-  //GradientLayer _gradient;
+  GradientLayer _gradient;
 }
