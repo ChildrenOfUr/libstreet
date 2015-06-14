@@ -4,7 +4,7 @@ class Platform extends CollisionLine {
   String id;
   // these colors determine the line's colors.
   int primaryColor = Color.Purple;
-  int secondaryColor = Color.MediumPurple;
+  int secondaryColor = Color.Purple;
   Platform(this.id, Point a, Point b) : super(a,b);
 }
 
@@ -47,11 +47,7 @@ class CollisionRect extends Sprite {
     B.x = b.x;
     B.y = b.y;
 
-    Shape shape = new Shape();
-    shape.graphics.rect(0,0, 1, 1);
-    shape.graphics.fillColor(Color.White);
-    shape.applyCache(0, 0, 1, 1);
-    _rect.addChild(shape);
+    _rect.addChild(Pixel.make());
     _rect.alpha = 0.5;
 
     addChild(_rect);
@@ -113,11 +109,8 @@ class CollisionLine extends Sprite{
     B.x = b.x;
     B.y = b.y;
 
-    Shape shape = new Shape();
-    shape.graphics.rect(0,-2, 1, 5);
-    shape.graphics.fillColor(Color.White);
-    shape.applyCache(0, -2, 1, 5);
-    _line.addChild(shape);
+    _line.addChild(Pixel.make());
+    _line.height = 7;
 
     addChild(_line);
     addChild(A);
@@ -137,7 +130,7 @@ class CollisionLine extends Sprite{
   @override
   render(RenderState renderState) {
     _line.x = A.x;
-    _line.y = A.y;
+    _line.y = A.y - 3;
     _line.children.first.width = new Point(A.x, A.y).distanceTo(new Point(B.x,B.y));
     _line.rotation = Math.atan2(B.y-A.y, B.x-A.x);
 
@@ -176,3 +169,15 @@ class AnchorCircle extends Sprite {
   }
 }
 
+
+class Pixel {
+  static Shape _PIXEL = new Shape()
+    ..graphics.rect(0,0, 1, 1)
+    ..graphics.fillColor(Color.White)
+    ..applyCache(0, 0, 1, 1);
+  static BitmapData _data = new BitmapData.fromRenderTextureQuad(_PIXEL.cache);
+
+  static Bitmap make() {
+    return new Bitmap(_data);
+  }
+}

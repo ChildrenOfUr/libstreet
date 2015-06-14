@@ -1,21 +1,13 @@
 import 'package:libstreet/libstreet.dart';
 import 'package:stagexl/stagexl.dart';
 import 'dart:html' as html;
-import 'dart:async';
 import 'dart:convert';
 
+ResourceManager RESOURCES = new ResourceManager();
+
 main() async {
-	//StageXL.stageOptions.renderEngine = RenderEngine.WebGL;
 
-	// Setting up the stageXL environment
-	RESOURCES = new ResourceManager();
-	STAGE = new Stage(html.querySelector('canvas'));
-	new RenderLoop()
-		..addStage(STAGE);
-
-  Street groddle;
-  // load the JSON
-  RESOURCES.addTextFile('groddle', 'groddle.json');
+  RESOURCES.addTextFile('groddle', 'GLI3272LOTD1B1F.json');
   await RESOURCES.load();
 
     // We turn the JSON into a map before we generate a street from it.
@@ -23,10 +15,11 @@ main() async {
     // from them without a JSON conversion process.
     Map groddleDef = JSON.decode(RESOURCES.getTextFile('groddle'));
 
-    // Render the Street
-    groddle = new Street(groddleDef);
-    STAGE.addChild(groddle);
-    await groddle.activate();
+	Street groddle = new Street(groddleDef);
+
+	StreetRenderer renderer = new StreetRenderer();
+	renderer.render(groddle);
+
 
 	print(groddle.height.toString() + ' ' + groddle.width.toString());
 

@@ -1,18 +1,45 @@
 library libstreet;
 import 'package:stagexl/stagexl.dart';
 import 'dart:math' as Math;
-
+import 'dart:html' as html;
 part 'src/deco.dart';
 part 'src/layer.dart';
 part 'src/camera.dart';
 part 'src/shapes.dart';
 
 ResourceManager RESOURCES;
-Stage STAGE;
+Stage _STAGE;
+
+
+StreetRenderer _renderer = new StreetRenderer._();
+class StreetRenderer {
+  factory StreetRenderer() => _renderer;
+
+  StreetRenderer._() {
+    StageXL.stageOptions
+      ..transparent = true
+      ..backgroundColor = 0x00000000;
+
+    // Setting up the stageXL environment
+    RESOURCES = new ResourceManager();
+    _STAGE = new Stage(html.querySelector('canvas'));
+    new RenderLoop()
+      ..addStage(_STAGE);
+  }
+
+  render(Street street) async {
+    // Render the Street
+    _STAGE.addChild(street);
+    await street.activate();
+  }
+}
+
+
 
 class Street extends DisplayObjectContainer {
   /// Map of the street's static properties
   Map def;
+  html.Element gradient = html.querySelector('#world-gradient');
 
   Camera camera = new Camera();
   DisplayObjectContainer actorLayer;
@@ -35,7 +62,7 @@ class Street extends DisplayObjectContainer {
 
   Street(final this.def) {
     camera.street = this;
-    _gradient = _generateGradient();
+    _generateGradient();
   }
 
   destroy() {
@@ -55,7 +82,6 @@ class Street extends DisplayObjectContainer {
   // Makes sure that the decos are loaded, then adds the street to the stage
   activate() async {
     await loadDecos();
-    this.addChild(_gradient);
 
     // Sort by z values
     List layerList = new List.from(def['dynamic']['layers'].values)
@@ -63,6 +89,7 @@ class Street extends DisplayObjectContainer {
 
     for (Map layerMap in layerList) {
       addDecoLayer(layerMap);
+      print(layerMap);
       // After appending 'middleground' insert the actor layer.
       if (layerMap['name'] == 'middleground') {
         actorLayer = new ActorLayer();
@@ -94,43 +121,35 @@ class Street extends DisplayObjectContainer {
 
   /// Adds a layer defined by the layerDef to the STAGE
   DecoLayer addDecoLayer(Map layerDef) {
-    DecoLayer newLayer = new DecoLayer(layerDef, street: this)
-      ..applyFilters();
+    DecoLayer newLayer = new DecoLayer(layerDef, street: this);
     addChild(newLayer);
     return newLayer;
   }
 
-  /// Returns a DisplayObject containing the background gradient of the street.
   /// TODO make this its own class
-  GradientLayer _generateGradient() {
-    var shape = new Shape();
-    shape.graphics.rect(0, 0, bounds.width, bounds.height);
-    shape.graphics.fillGradient(
-        new GraphicsGradient.linear(0, 0, 0, bounds.height)
-          ..addColorStop(0, int.parse('0xFF' + def['gradient']['top']))
-          ..addColorStop(1, int.parse('0xFF' + def['gradient']['bottom']))
-    );
-    shape.applyCache(0,0, bounds.width, bounds.height);
-    return new GradientLayer()..addChild(shape);
+   _generateGradient() {
+    gradient
+      ..style.width = '${bounds.width}px'
+      ..style.height = '${bounds.height}px';
+
+    String top = def['gradient']['top'];
+    String bottom = def['gradient']['bottom'];
+
+    gradient.style.background = "-webkit-linear-gradient(top, #$top, #$bottom)";
+    gradient.style.background = "-moz-linear-gradient(top, #$top, #$bottom)";
+    gradient.style.background = "-ms-linear-gradient(#$top, #$bottom)";
+    gradient.style.background = "-o-linear-gradient(#$top, #$bottom)";
   }
 
   // override render to offset gradient
   @override render(RenderState renderState) {
-    _gradient.x = -camera.x;
-    _gradient.y = -camera.y;
+    // Position the individual layers
+    for (Layer layer in children.where((child) => child is Layer)) {
+      layer.updatePosition();
+    }
 
-    // The origin of a street is not top-left,
-    // add bounds to compensate
-    if (actorLayer != null) {
-      actorLayer.x = -camera.x - bounds.left;
-      actorLayer.y = -camera.y - bounds.top;
-    }
-    if (collisionLayer != null) {
-      collisionLayer.x = -camera.x - bounds.left;
-      collisionLayer.y = -camera.y - bounds.top;
-    }
+    gradient.style.transform = 'translate(${-camera.x}px,${-camera.y}px)';
 
     super.render(renderState);
   }
-  GradientLayer _gradient;
 }

@@ -2,7 +2,6 @@ part of libstreet;
 
 
 class DecoLayer extends Layer {
-  Sprite _decoHolder = new Sprite();
   Street street;
   Map def;
 
@@ -28,7 +27,6 @@ class DecoLayer extends Layer {
       }
       addDeco(deco);
     }
-
     applyFilters();
   }
 
@@ -67,7 +65,7 @@ class DecoLayer extends Layer {
   }
 
   // override render to support parallax
-  @override render(RenderState renderState) {
+  @override updatePosition()  {
     if (stage != null) {
       num currentPercentX =
       (street.camera.x) / (street.bounds.width - stage.stageWidth);
@@ -78,15 +76,12 @@ class DecoLayer extends Layer {
       x = -(width - stage.stageWidth) * currentPercentX;
       y = -(height - stage.stageHeight) * currentPercentY;
     }
-    super.render(renderState);
   }
 }
 
-class GradientLayer extends Sprite {}
+class ActorLayer extends Layer {}
 
-class ActorLayer extends Sprite {}
-
-class CollisionLayer extends Sprite {
+class CollisionLayer extends Layer {
   Street street;
   CollisionLayer(this.street) {
     // Add ladders.
@@ -109,6 +104,8 @@ class CollisionLayer extends Sprite {
           new Point(lineMap['endpoints'].last['x'],lineMap['endpoints'].last['y']));
       addChild(line);
     }
+
+    print('created CollisionLayer');
   }
 }
 
@@ -117,4 +114,10 @@ class CollisionLayer extends Sprite {
 /// Parent layer class, handles parallax
 class Layer extends Sprite {
   Street street;
+  updatePosition() {
+    if (street != null) {
+      x = -street.camera.x - street.bounds.left;
+      y = -street.camera.y - street.bounds.top;
+    }
+  }
 }

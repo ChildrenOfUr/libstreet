@@ -6,8 +6,74 @@
     <script type="application/dart" src="main.dart" async></script>
 
     <title>libstreet</title>
+
+    <style>
+
+        main {
+            width:100%;
+            max-width:1300px;
+            min-width:833px;
+            height:100%;
+            max-height:750px;
+            min-height:500px;
+
+            position:absolute;
+            left:0; right:0;
+            top:0; bottom:0;
+            margin:auto;
+            background: #eee;
+        }
+
+        #game {
+            position:absolute;
+            top:50px;
+            left:20px;
+            width:calc(100% - 280px);
+            max-width:calc(100% - 40px);
+            min-width:calc(300px - 40px);
+            height:calc(100% - 140px);
+            border-radius:10px;
+            /* this fixes the overflow:hidden in Chrome not clipping it's contents to the border-radius
+            more information here: http://stackoverflow.com/questions/5736503/how-to-make-css3-rounded-corners-hide-overflow-in-chrome-opera*/
+            -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+            overflow:hidden;
+            z-index:0;
+        }
+
+        #world {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #world-gradient {
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        #world-stage {
+            position:absolute;
+            top:0;
+            left:0;
+            margin:0;
+            padding:0;
+        }
+    </style>
+
+
 </head>
-<body style="background:black">
-    <canvas width="1024" height="2000"></canvas>
+<body style="background:#eee">
+
+<main>
+<div id="game">
+    <!-- Game Elements -->
+    <div id="world">
+        <div id="world-gradient"></div>
+        <canvas id="world-stage" width="1300" height="750"></canvas>
+    </div>
+</div>
+</main>
+
+
 </body>
 </html>
