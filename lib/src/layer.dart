@@ -28,6 +28,8 @@ class DecoLayer extends Layer {
       addDeco(deco);
     }
     applyFilters();
+    html.ImageElement image = new html.ImageElement(src: new BitmapData.fromRenderTextureQuad(this.cache).toDataUrl());
+    html.document.body.append(image);
   }
 
   addDeco(Deco deco) {
@@ -78,38 +80,6 @@ class DecoLayer extends Layer {
     }
   }
 }
-
-class ActorLayer extends Layer {}
-
-class CollisionLayer extends Layer {
-  Street street;
-  CollisionLayer(this.street) {
-    // Add ladders.
-    List ladders = new List.from(street.def['dynamic']['layers']['middleground']['ladders']);
-    for (Map ladderMap in ladders) {
-      Ladder ladder = new Ladder(
-          ladderMap['id'],
-          new Point(ladderMap['x'] - ladderMap['w']/2, ladderMap['y'] - ladderMap['h']),
-          new Point(ladderMap['x'] + ladderMap['w']/2, ladderMap['y'])
-      );
-      addChild(ladder);
-    }
-
-    // Add collision lines.
-    List lines = new List.from(street.def['dynamic']['layers']['middleground']['platformLines']);
-    for (Map lineMap in lines) {
-      Platform line = new Platform(
-          lineMap['id'],
-          new Point(lineMap['endpoints'].first['x'],lineMap['endpoints'].first['y']),
-          new Point(lineMap['endpoints'].last['x'],lineMap['endpoints'].last['y']));
-      addChild(line);
-    }
-
-    print('created CollisionLayer');
-  }
-}
-
-
 
 /// Parent layer class, handles parallax
 class Layer extends Sprite {

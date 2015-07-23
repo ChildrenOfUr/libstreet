@@ -10,19 +10,17 @@ part 'src/shapes.dart';
 ResourceManager RESOURCES;
 Stage _STAGE;
 
-
-StreetRenderer _renderer = new StreetRenderer._();
 class StreetRenderer {
-  factory StreetRenderer() => _renderer;
+  StreetRenderer() {
+    html.CanvasElement canvas = new html.CanvasElement();
 
-  StreetRenderer._() {
     StageXL.stageOptions
       ..transparent = true
       ..backgroundColor = 0x00000000;
 
     // Setting up the stageXL environment
     RESOURCES = new ResourceManager();
-    _STAGE = new Stage(html.querySelector('canvas'));
+    _STAGE = new Stage(canvas);
     new RenderLoop()
       ..addStage(_STAGE);
   }
@@ -60,10 +58,7 @@ class Street extends DisplayObjectContainer {
   bool get loaded => _loaded;
   bool _loaded = false;
 
-  Street(final this.def) {
-    camera.street = this;
-    _generateGradient();
-  }
+  Street(final this.def);
 
   destroy() {
     // Remove the cache's from the DecoLayers
@@ -89,16 +84,7 @@ class Street extends DisplayObjectContainer {
 
     for (Map layerMap in layerList) {
       addDecoLayer(layerMap);
-      print(layerMap);
-      // After appending 'middleground' insert the actor layer.
-      if (layerMap['name'] == 'middleground') {
-        actorLayer = new ActorLayer();
-        addChild(actorLayer);
-      }
     }
-    // After all deco,and actor layers, add the collision layer.
-    collisionLayer = new CollisionLayer(this);
-    addChild(collisionLayer);
   }
 
   /// Loads all the decos on this [Street] into memory
@@ -126,29 +112,12 @@ class Street extends DisplayObjectContainer {
     return newLayer;
   }
 
-  /// TODO make this its own class
-   _generateGradient() {
-    gradient
-      ..style.width = '${bounds.width}px'
-      ..style.height = '${bounds.height}px';
-
-    String top = def['gradient']['top'];
-    String bottom = def['gradient']['bottom'];
-
-    gradient.style.background = "-webkit-linear-gradient(top, #$top, #$bottom)";
-    gradient.style.background = "-moz-linear-gradient(top, #$top, #$bottom)";
-    gradient.style.background = "-ms-linear-gradient(#$top, #$bottom)";
-    gradient.style.background = "-o-linear-gradient(#$top, #$bottom)";
-  }
-
   // override render to offset gradient
   @override render(RenderState renderState) {
     // Position the individual layers
     for (Layer layer in children.where((child) => child is Layer)) {
       layer.updatePosition();
     }
-
-    gradient.style.transform = 'translate(${-camera.x}px,${-camera.y}px)';
 
     super.render(renderState);
   }

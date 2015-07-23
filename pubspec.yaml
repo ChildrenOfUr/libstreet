@@ -2,7 +2,4 @@ name: libstreet
 description: Rendering coU street JSON
 version: 0.0.0
 dependencies:
-  stagexl:
-    git:
-      url: https://github.com/bp74/StageXL.git
-      ref: 66d9d08e6ea31bcf961e09856d1265d85e42c42d
+  stagexl: "^0.12.0+1"
