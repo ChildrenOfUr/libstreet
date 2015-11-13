@@ -2,7 +2,7 @@ part of libstreet;
 
 /// a static representation of a camera. Makes sure it's in bounds;
 class Camera {
-  Street street;
+  Camera._();
 
   num _x = 0;
   num _y = 0;
@@ -14,8 +14,8 @@ class Camera {
     if (x <= 0)
       x = 0;
 
-    if (x + street.stage.stageWidth >= street.bounds.width)
-      x = street.bounds.width - street.stage.stageWidth;
+    if (x + StreetRenderer.stage.stageWidth >= StreetRenderer.current.bounds.width)
+      x = StreetRenderer.current.bounds.width - StreetRenderer.stage.stageWidth;
 
     _x = x;
   }
@@ -23,8 +23,8 @@ class Camera {
   set y(num y) {
     if (y <= 0)
       y = 0;
-    if (y + street.stage.stageHeight >= street.bounds.height)
-      y = street.bounds.height - street.stage.stageHeight;
+    if (y + StreetRenderer.stage.stageHeight >= StreetRenderer.current.bounds.height)
+      y = StreetRenderer.current.bounds.height - StreetRenderer.stage.stageHeight;
 
     _y = y;
   }
