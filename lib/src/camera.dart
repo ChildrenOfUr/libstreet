@@ -14,8 +14,8 @@ class Camera {
     if (x <= 0)
       x = 0;
 
-    if (x + StreetRenderer.stage.stageWidth >= StreetRenderer.current.bounds.width)
-      x = StreetRenderer.current.bounds.width - StreetRenderer.stage.stageWidth;
+    if (x >= StreetRenderer.current.bounds.width - viewport.width)
+      x = StreetRenderer.current.bounds.width - viewport.width;
 
     _x = x;
   }
@@ -23,11 +23,16 @@ class Camera {
   set y(num y) {
     if (y <= 0)
       y = 0;
-    if (y + StreetRenderer.stage.stageHeight >= StreetRenderer.current.bounds.height)
-      y = StreetRenderer.current.bounds.height - StreetRenderer.stage.stageHeight;
+    if (y >= StreetRenderer.current.bounds.height - viewport.height)
+      y = StreetRenderer.current.bounds.height - viewport.height;
 
     _y = y;
   }
+
+  Rectangle get viewport =>
+    new Rectangle(x, y,
+      StreetRenderer.stage.stageWidth * (StreetRenderer.stage.sourceWidth / StreetRenderer.stage.stageWidth),
+      StreetRenderer.stage.stageHeight * (StreetRenderer.stage.sourceHeight / StreetRenderer.stage.stageHeight));
 
   @override
   toString() => 'x:$x y:$y';

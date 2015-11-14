@@ -25,6 +25,7 @@ main() async {
 		if(event.keyCode == 115)
 			StreetRenderer.camera.y += 30;
 	});
+
 }
 
 

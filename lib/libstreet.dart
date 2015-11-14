@@ -34,7 +34,6 @@ class StreetRenderer {
     current = this;
     layers.children.clear();
     _tsid = streetData['tsid'];
-    groundY = -(streetData['dynamic']['ground_y'] as num).abs();
 
     bounds = new Rectangle(streetData['dynamic']['l'],
         streetData['dynamic']['t'],
@@ -59,7 +58,6 @@ class StreetRenderer {
     }
     resourceManager.load().then((_) {
       List layerMaps = new List.from(streetData['dynamic']['layers'].values);
-      layerMaps.forEach((Map layer) => print(layer['z']) );
       layerMaps.sort( (Map A, Map B) => A['z'].compareTo(B['z']) );
 
       for (Map layer in layerMaps) {
@@ -78,19 +76,21 @@ class StreetRenderer {
 
   static render() {
     for (DisplayObject layerBitmap in layers.children) {
-      num currentPercentX = camera.x / (current.bounds.width);
-      num currentPercentY = camera.y / (current.bounds.height);
-      num offsetX = (layerBitmap.width - stage.width) * currentPercentX;
-      num offsetY = (layerBitmap.height - stage.height) * currentPercentY;
-      if (layerBitmap.name == 'middleground') offsetY -= current.groundY;
+      num currentPercentX = (camera.x) / (current.bounds.width - camera.viewport.width);
+      num currentPercentY = (camera.y) / (current.bounds.height - camera.viewport.height);
+      num offsetX = (layerBitmap.width - camera.viewport.width) * currentPercentX;
+      num offsetY = (layerBitmap.height - camera.viewport.height) * currentPercentY;
 
-
-      if (layerBitmap.name != 'player')
-      layerBitmap.setTransform(-offsetX, -offsetY);
-      else
-      layerBitmap.setTransform(camera.x, camera.y);
+      if (layerBitmap.name != 'player') {
+        layerBitmap
+          ..x = -offsetX
+          ..y = -offsetY;
+      }
+      else {
+        // player icon
+      layerBitmap.setTransform(camera.viewport.width/2 - (layerBitmap.width/2), camera.viewport.height/2 - (layerBitmap.height/2));
+      };
     }
-    layers.setTransform(-camera.x/2, -camera.y/2);
   }
 
 // Static properties
@@ -100,8 +100,9 @@ class StreetRenderer {
   static Sprite layers = new Sprite();
   static Stage stage = new Stage(
     html.querySelector('#street'),
-    width: 1024,
-    height: 768
+    // whatever this is, we need to keep the same aspect ratios
+    width: 1104,
+    height: 621
   )
   ..addChild(layers);
   static RenderLoop _renderloop = new RenderLoop();
@@ -110,7 +111,8 @@ class StreetRenderer {
   static _init() {
     StageXL.stageOptions
           ..transparent = true
-          ..backgroundColor = 0x00000000;
+          ..backgroundColor = 0x00000000
+          ..stageScaleMode = StageScaleMode.NO_BORDER;
     StageXL.bitmapDataLoadOptions.corsEnabled = true;
 
     _renderloop.addStage(stage);
