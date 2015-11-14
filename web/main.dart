@@ -3,20 +3,19 @@ import 'dart:convert';
 import 'package:libstreet/libstreet.dart';
 import 'dart:html' as html;
 
-ResourceManager RESOURCES = new ResourceManager();
+ResourceManager resourceManager = new ResourceManager();
 
 main() async {
-  RESOURCES.addTextFile('groddle', 'GLI3272LOTD1B1F.json');
-  await RESOURCES.load();
-    Map groddleDef = JSON.decode(RESOURCES.getTextFile('groddle'));
+  resourceManager.addTextFile('groddle', 'GLI3272LOTD1B1F.json');
+  await resourceManager.load();
+  Map groddleDef = JSON.decode(resourceManager.getTextFile('groddle'));
 
-    StreetRenderer street = new StreetRenderer(groddleDef);
-    await street.loaded;
+  StreetRenderer street = new StreetRenderer(groddleDef);
+  await street.loaded;
 
-    loop();
 
-    html.document.onKeyPress.listen((event) {
-		if(event.keyCode == 97)
+  html.document.onKeyPress.listen((event) {
+	  if(event.keyCode == 97)
 			StreetRenderer.camera.x -= 30;
 		if(event.keyCode == 100)
 			StreetRenderer.camera.x += 30;
@@ -26,11 +25,4 @@ main() async {
 			StreetRenderer.camera.y += 30;
 	});
 
-}
-
-
-loop() async {
-  await html.window.animationFrame;
-  StreetRenderer.render();
-  loop();
 }
