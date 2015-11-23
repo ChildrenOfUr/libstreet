@@ -7,32 +7,33 @@ class Camera {
   num _x = 0;
   num _y = 0;
 
-  num get x => _x;
-  num get y => _y;
-
-  set x(num x) {
-    if (x <= 0)
-      x = 0;
-
-    if (x >= StreetRenderer.current.bounds.width - viewport.width)
-      x = StreetRenderer.current.bounds.width - viewport.width;
-
-    _x = x;
+  num get x {
+    if (_x >= StreetRenderer.current.bounds.width - viewport.width)
+      return StreetRenderer.current.bounds.width - viewport.width;
+    if (_x <= 0)
+      return 0;
+    return _x;
   }
 
-  set y(num y) {
-    if (y <= 0)
-      y = 0;
-    if (y >= StreetRenderer.current.bounds.height - viewport.height)
-      y = StreetRenderer.current.bounds.height - viewport.height;
+  num get y {
+    if (_y <= 0)
+      return 0;
+    if (_y >= StreetRenderer.current.bounds.height - viewport.height)
+      return StreetRenderer.current.bounds.height - viewport.height;
+    return _y;
+  }
+  set x(num x) => _x = x;
+  set y(num y) => _y = y;
 
-    _y = y;
+  refresh() {
+    x = _x;
+    y = _y;
   }
 
   Rectangle get viewport =>
-    new Rectangle(x, y,
-      StreetRenderer.stage.stageWidth * (StreetRenderer.stage.sourceWidth / StreetRenderer.stage.stageWidth),
-      StreetRenderer.stage.stageHeight * (StreetRenderer.stage.sourceHeight / StreetRenderer.stage.stageHeight));
+    new Rectangle(0, 0,
+      StreetRenderer.stage.stageWidth * (StreetRenderer.canvas.width / StreetRenderer.stage.stageWidth),
+      StreetRenderer.stage.stageHeight * (StreetRenderer.canvas.height / StreetRenderer.stage.stageHeight));
 
   @override
   toString() => 'x:$x y:$y';

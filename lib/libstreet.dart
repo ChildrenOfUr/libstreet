@@ -27,7 +27,7 @@ class StreetRenderer extends Animatable {
     stage.children.clear();
 
     // declare some useful properties.
-    tsid = streetData['tsid'].replaceRange(0, 0, 'L');
+    tsid = streetData['tsid'].replaceRange(0, 1, 'L');
     bounds = new Rectangle(streetData['dynamic']['l'],
         streetData['dynamic']['t'],
         streetData['dynamic']['l'].abs() + streetData['dynamic']['r'].abs(),
@@ -40,27 +40,31 @@ class StreetRenderer extends Animatable {
     canvas.style.background = "-moz-linear-gradient(top, #$top, #$bottom)";
     canvas.style.background = "-ms-linear-gradient(#$top, #$bottom)";
     canvas.style.background = "-o-linear-gradient(#$top, #$bottom)";
-
-    // load and inject the layer images.
-    for (Map layer in streetData['dynamic']['layers'].values) {
-      String layerName = layer['name'].replaceAll(' ', '_');
-      String url = 'http://childrenofur.com/assets/streetLayers/$tsid/$layerName.png';
-      if (!resourceManager.containsBitmapData(layerName+tsid))
-      resourceManager.addBitmapData(layerName+tsid, url);
-    }
-    resourceManager.load().then((_) {
-      List layerMaps = new List.from(streetData['dynamic']['layers'].values);
-      layerMaps.sort( (Map A, Map B) => A['z'].compareTo(B['z']) );
-
-      for (Map layer in layerMaps) {
+    try {
+      // load and inject the layer images.
+      for (Map layer in streetData['dynamic']['layers'].values) {
         String layerName = layer['name'].replaceAll(' ', '_');
-        Bitmap layerBitmap = new Bitmap(resourceManager.getBitmapData(layerName+tsid));
-        layerBitmap.name = layerName;
-        stage.addChild(layerBitmap);
+        String url = 'http://childrenofur.com/assets/streetLayers/$tsid/$layerName.png';
+        if (!resourceManager.containsBitmapData(layerName+tsid))
+        resourceManager.addBitmapData(layerName+tsid, url);
       }
-      _whenLoaded.complete();
-    });
-    _renderloop.juggler.add(this);
+
+      resourceManager.load().then((_) {
+        List layerMaps = new List.from(streetData['dynamic']['layers'].values);
+        layerMaps.sort( (Map A, Map B) => A['z'].compareTo(B['z']) );
+
+        for (Map layer in layerMaps) {
+          String layerName = layer['name'].replaceAll(' ', '_');
+          Bitmap layerBitmap = new Bitmap(resourceManager.getBitmapData(layerName+tsid));
+          layerBitmap.name = layerName;
+          stage.addChild(layerBitmap);
+        }
+        _whenLoaded.complete();
+      });
+      _renderloop.juggler.add(this);
+    } catch(e) { //todo figure out why this doesn't catch
+      print('Unable to find layer images.');
+    }
   }
 
   // Static properties
@@ -77,7 +81,8 @@ class StreetRenderer extends Animatable {
     StageXL.stageOptions
           ..transparent = true
           ..backgroundColor = 0x00000000
-          ..stageScaleMode = StageScaleMode.NO_BORDER;
+          ..stageScaleMode = StageScaleMode.NO_SCALE
+          ..stageAlign = StageAlign.TOP_LEFT;
     StageXL.bitmapDataLoadOptions.corsEnabled = true;
     _renderloop.addStage(stage);
   }
@@ -94,5 +99,6 @@ class StreetRenderer extends Animatable {
           ..x = -offsetX
           ..y = -offsetY;
     };
+    camera.refresh();
   }
 }
