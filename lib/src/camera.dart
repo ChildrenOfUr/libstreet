@@ -8,27 +8,22 @@ class Camera {
   num _y = 0;
 
   num get x {
-    if (_x >= StreetRenderer.current.bounds.width - viewport.width)
-      return StreetRenderer.current.bounds.width - viewport.width;
-    if (_x <= 0)
-      return 0;
+    if (_x >= StreetRenderer.current.bounds.width - viewport.width/2)
+      return StreetRenderer.current.bounds.width - viewport.width/2;
+    if (_x <= viewport.width/2)
+      return viewport.width/2;
     return _x;
   }
 
   num get y {
-    if (_y <= 0)
-      return 0;
-    if (_y >= StreetRenderer.current.bounds.height - viewport.height)
-      return StreetRenderer.current.bounds.height - viewport.height;
+    if (_y <= viewport.height/2)
+      return viewport.height/2;
+    if (_y >= StreetRenderer.current.bounds.height - viewport.height/2)
+      return StreetRenderer.current.bounds.height - viewport.height/2;
     return _y;
   }
   set x(num x) => _x = x;
   set y(num y) => _y = y;
-
-  refresh() {
-    x = _x;
-    y = _y;
-  }
 
   Rectangle get viewport =>
     new Rectangle(0, 0,

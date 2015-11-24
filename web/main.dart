@@ -10,19 +10,27 @@ main() async {
   await resourceManager.load();
   Map groddleDef = JSON.decode(resourceManager.getTextFile('groddle'));
 
-  StreetRenderer street = new StreetRenderer(groddleDef);
+  StreetRenderer street = new StreetRenderer.Street(groddleDef);
   await street.loaded;
 
+  resourceManager.addBitmapData('player', 'testPlayer.png');
+  await resourceManager.load();
+
+  Bitmap player = new Bitmap(resourceManager.getBitmapData('player'));
+  street.entities.addChild(player);
 
   html.document.onKeyPress.listen((event) {
 	  if(event.keyCode == 97)
-			StreetRenderer.camera.x -= 30;
+			player.x -= 30;
 		if(event.keyCode == 100)
-			StreetRenderer.camera.x += 30;
+			player.x += 30;
 		if(event.keyCode == 119)
-			StreetRenderer.camera.y -= 30;
+		  player.y -= 30;
 		if(event.keyCode == 115)
-			StreetRenderer.camera.y += 30;
+			player.y += 30;
+
+    StreetRenderer.camera.x = player.x;
+    StreetRenderer.camera.y = player.y;
 	});
 
 }
