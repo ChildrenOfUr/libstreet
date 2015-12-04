@@ -11,6 +11,10 @@ Map playerData = {
     },
     'default': {
       'frames': [14]
+    },
+    'flip': {
+      'frames': [12],
+      'loop': true
     }
   }
 };
@@ -19,11 +23,17 @@ class Animation extends Sprite {
   Map<String, FlipBook> state = {};
   String current;
 
+  set flipped(bool flipped) {
+    if (flipped)
+      this.scaleX = -1;
+    else
+      this.scaleX = 1;
+  }
+
   set(String name) {
     if (current == name) return;
     children.clear();
     children.add(state[name]);
-    StreetRenderer.stage.juggler.add(state[name]);
     state[name].gotoAndPlay(0);
     current = name;
   }
@@ -46,7 +56,6 @@ class Animation extends Sprite {
       }
       print('c');
       state[name] = new FlipBook(animationFrames);
-
       state[name]
         ..loop = animationData['loop'] ?? false
         ..setTransform(
@@ -55,7 +64,8 @@ class Animation extends Sprite {
           if (!animationData['loop'] && animationData[name] != 'default') {
             set('default');
           }
-        });
+      });
+      StreetRenderer.stage.juggler.add(state[name]);
     });
 
     if (data['animations'].keys.contains('default')) {

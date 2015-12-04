@@ -1,6 +1,5 @@
 part of libstreet;
 
-
 class Player extends Entity {
   static Player current;
   String username;
@@ -22,8 +21,8 @@ class Player extends Entity {
   Player(this.username);
 }
 
-
 abstract class Entity extends Animatable{
+  String id;
   DisplayObject _xlObject;
   List actions = [];
 
