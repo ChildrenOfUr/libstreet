@@ -17,18 +17,18 @@ main() async {
   Animation player = new Animation()
     ..x = groddle.bounds.width/2
     ..y = groddle.bounds.height/2;
-  await player.load(playerData);
+  await player.load(pigData);
 
   StreetRenderer.camera.x = player.x;
   StreetRenderer.camera.y = player.y - 30;
 
   groddle.entityLayer.addChild(player);
   player.onMouseClick.listen((_) {
-    player.set('flip');
+    //player.set('flip');
   });
 
   html.document.onKeyPress.listen((event) {
-    player.set('walk');
+    //player.set('walk');
 	  if(event.keyCode == 97) {
       player.flipped = true;
 			player.x -= 10;
@@ -46,6 +46,6 @@ main() async {
     StreetRenderer.camera.y = player.y - 30;
 	});
   html.document.onKeyUp.listen((_) {
-    player.set('default');
+    //player.set('default');
   });
 }
