@@ -10,6 +10,7 @@ class EntityLayer extends Layer {
 
 class ImageLayer extends Layer {
   ImageLayer(String tsid, String name) {
+    this.mouseEnabled = false;
     this.name = name;
     Bitmap layerBitmap = new Bitmap(StreetRenderer.resourceManager.getBitmapData(name+tsid));
     addChild(layerBitmap);
