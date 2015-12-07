@@ -1,24 +1,5 @@
 part of libstreet;
 
-Map examplePlayer = {
-  'image': 'packages/libstreet/src/base.png',
-  'height': 1,
-  'width': 15,
-  'animations': {
-    'walk': {
-      'frames': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-      'loop': true
-    },
-    'default': {
-      'frames': [14]
-    },
-    'flip': {
-      'frames': [12],
-      'loop': true
-    }
-  }
-};
-
 Map pigData = {
   'image': 'packages/libstreet/src/pig.png',
   'height': 5,
@@ -26,54 +7,7 @@ Map pigData = {
   'animations': {
     'default': {
       'frames': [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        37,
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        47
+        [0, 47]
       ],
       'loop': true,
       'bounce': true
@@ -82,6 +16,7 @@ Map pigData = {
 };
 
 class Animation extends Sprite {
+  num speed = 1;
   Map<String, FlipBook> state = {};
   String current;
 
@@ -94,6 +29,10 @@ class Animation extends Sprite {
     if (current == name) return;
     children.clear();
     children.add(state[name]);
+
+    for (int i = state[name].frameDurations.length - 1; i >= 0; i--) {
+      state[name].frameDurations[i] = 0.033 / speed;
+    };
     state[name].gotoAndPlay(0);
     current = name;
   }
@@ -109,8 +48,19 @@ class Animation extends Sprite {
 
     data['animations'].forEach((String name, Map animationData) {
       List animationFrames = [];
-      for (int frame in animationData['frames']) {
-        animationFrames.add(sheet.frames[frame]);
+      for (var frame in animationData['frames']) {
+        if (frame is int) {
+          animationFrames.add(sheet.frames[frame]);
+        } else if (frame is List<int>) {
+          int i = frame[1] - frame[0];
+          if (i.isNegative) {
+            for (int j = i.abs(); j > 0; j--) {
+              animationFrames.add(sheet.frames[frame[1] + j]);
+            }
+          } else {
+            for (i; i > 0; i--) animationFrames.add(sheet.frames[frame[1] - i]);
+          }
+        }
       }
       if (animationData['bounce'] == true) {
         animationFrames.addAll(animationFrames.toList().reversed);

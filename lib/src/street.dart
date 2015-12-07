@@ -19,6 +19,7 @@ class Street {
     await entity.load();
     _entities.add(entity);
     entityLayer.addChild(entity._xlObject);
+    print('added');
     if (entity._xlObject is Animatable)
       StreetRenderer.stage.juggler.add(entity._xlObject as Animatable);
   }
