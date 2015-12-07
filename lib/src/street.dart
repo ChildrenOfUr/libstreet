@@ -11,15 +11,19 @@ class Street {
   // Entity Management
 
   EntityLayer entityLayer;
+  EntityLayer collisionLayer;
 
   List<Entity> _entities = [];
   get entities => _entities.toList();
 
-  addEntity(Entity entity) async {
+  addEntity(Entity entity, num x, num y) async {
     await entity.load();
     _entities.add(entity);
+    entity._xlObject
+      ..x = x
+      ..y = y;
     entityLayer.addChild(entity._xlObject);
-    print('added');
+    StreetRenderer.stage.juggler.add(entity);
     if (entity._xlObject is Animatable)
       StreetRenderer.stage.juggler.add(entity._xlObject as Animatable);
   }
@@ -60,5 +64,7 @@ class Street {
         StreetRenderer._addLayer(entityLayer);
       }
     }
+    collisionLayer = new CollisionLayer();
+    StreetRenderer._addLayer(collisionLayer);
   }
 }

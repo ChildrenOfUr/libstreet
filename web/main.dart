@@ -15,11 +15,17 @@ main() async {
   Street groddle = new Street(groddleDef);
 
   Player player = new Player('yolo');
-  await groddle.addEntity(player);
+  await groddle.addEntity(player, groddle.bounds.width/2, groddle.bounds.height/2);
+  Player.current = player;
 
-  player
-    ..x = groddle.bounds.width/2
-    ..y = groddle.bounds.height/2;
+
+  StreetRenderer.stage.onMouseClick.listen((data) async {
+    Player p = new Player('x');
+    p.actions.add('pet');
+    await groddle.addEntity(p, data.stageX + StreetRenderer.camera.x - StreetRenderer.camera.viewport.width/2, data.stageY + StreetRenderer.camera.y - StreetRenderer.camera.viewport.height/2);
+    p.animation.flipped = true;
+    p.animation.set('idle');
+  });
 
 
   StreetRenderer.camera.x = player.x;

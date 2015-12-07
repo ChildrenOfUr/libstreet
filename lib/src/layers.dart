@@ -1,5 +1,11 @@
 part of libstreet;
 
+class CollisionLayer extends Layer {
+  CollisionLayer () {
+    layerWidth = StreetRenderer.current.bounds.width;
+    layerHeight = StreetRenderer.current.bounds.height;
+  }
+}
 
 class EntityLayer extends Layer {
   EntityLayer () {

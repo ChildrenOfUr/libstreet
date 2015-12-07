@@ -2,11 +2,16 @@ library libstreet;
 import 'package:stagexl/stagexl.dart';
 import 'dart:html' as html;
 import 'dart:async';
+
 part 'src/entity.dart';
+part 'src/entities/player.dart';
+part 'src/entities/npc.dart';
+
 part 'src/camera.dart';
 part 'src/layers.dart';
 part 'src/street.dart';
 part 'src/lines.dart';
+
 part 'src/animation.dart';
 
 
@@ -16,6 +21,7 @@ abstract class StreetRenderer {
   static Camera camera = new Camera._();
   static html.CanvasElement canvas = html.querySelector('canvas#street');
   static Stage stage = new Stage(canvas, width: 1024, height: 768);
+  static Juggler get juggler => stage.juggler;
   static RenderLoop _renderloop = new RenderLoop();
   static ResourceManager resourceManager = new ResourceManager();
 

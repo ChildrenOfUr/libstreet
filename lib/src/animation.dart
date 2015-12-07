@@ -1,20 +1,5 @@
 part of libstreet;
 
-Map pigData = {
-  'image': 'packages/libstreet/src/pig.png',
-  'height': 5,
-  'width': 10,
-  'animations': {
-    'default': {
-      'frames': [
-        [0, 47]
-      ],
-      'loop': true,
-      'bounce': true
-    }
-  }
-};
-
 class Animation extends Sprite {
   num speed = 1;
   Map<String, FlipBook> state = {};
