@@ -1,70 +1,44 @@
 part of libstreet;
 
 
-class Street {
+class Street extends DisplayObjectContainer {
   Map streetData;
-  Rectangle _bounds;
-  get bounds => _bounds;
-  String tsid;
-  num groundY;
+
+  @override
+  Rectangle get bounds => new Rectangle(
+      streetData['dynamic']['l'],
+      streetData['dynamic']['t'],
+      (streetData['dynamic']['l'].abs() + streetData['dynamic']['r'].abs()).toInt(),
+      (streetData['dynamic']['t'].abs() + streetData['dynamic']['b'].abs()).toInt()
+  );
+  String get tsid => streetData['tsid'].replaceRange(0, 1, 'L');
+  num get groundY => -(streetData['dynamic']['ground_y'] as num).abs();
 
   // Entity Management
-
-  EntityLayer entityLayer;
-  EntityLayer collisionLayer;
-
-  List<Entity> _entities = [];
-  get entities => _entities.toList();
-
-  addEntity(Entity entity, num x, num y) async {
-    await entity.load();
-    _entities.add(entity);
-    entity._xlObject
-      ..x = x
-      ..y = y;
-    entityLayer.addChild(entity._xlObject);
-    StreetRenderer.stage.juggler.add(entity);
-    if (entity._xlObject is Animatable)
-      StreetRenderer.stage.juggler.add(entity._xlObject as Animatable);
-  }
-
-  removeEntity(Entity entity) {
-    _entities.remove(entity);
-    entityLayer.removeChild(entity._xlObject);
-    if (entity._xlObject is Animatable)
-      StreetRenderer.stage.juggler.remove(entity._xlObject as Animatable);
-  }
+  EntityLayer entities;
+  CollisionLayer collisionLayer;
 
   // Constructor
   Street(this.streetData) {
-    StreetRenderer._clearLayers();
     StreetRenderer.current = this;
-
-    // declare some useful properties.
-    tsid = streetData['tsid'].replaceRange(0, 1, 'L');
-    groundY = -(streetData['dynamic']['ground_y'] as num).abs();
-    _bounds = new Rectangle(streetData['dynamic']['l'],
-        streetData['dynamic']['t'],
-        streetData['dynamic']['l'].abs() + streetData['dynamic']['r'].abs(),
-        (streetData['dynamic']['t'] - streetData['dynamic']['b']).abs());
 
     // set the canvas gradient.
     String top = streetData['gradient']['top'];
     String bottom = streetData['gradient']['bottom'];
-    StreetRenderer._setGradient(top, bottom);
+    StreetRenderer.setGradient(top, bottom);
 
     // adds layers
     List layerMaps = new List.from(streetData['dynamic']['layers'].values);
     layerMaps.sort( (Map A, Map B) => A['z'].compareTo(B['z']) );
     for (Map layer in layerMaps) {
       String layerName = layer['name'].replaceAll(' ', '_');
-      StreetRenderer._addLayer(new ImageLayer(tsid, layerName));
+      addChild(new ImageLayer(tsid, layerName));
       if (layerName == 'middleground') {
-        entityLayer = new EntityLayer();
-        StreetRenderer._addLayer(entityLayer);
+        entities = new EntityLayer();
+        addChild(entities);
       }
     }
-    collisionLayer = new CollisionLayer();
-    StreetRenderer._addLayer(collisionLayer);
+    collisionLayer = new CollisionLayer(streetData);
+    addChild(collisionLayer);
   }
 }

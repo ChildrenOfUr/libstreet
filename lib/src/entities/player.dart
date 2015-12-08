@@ -13,7 +13,7 @@ class Player extends Entity {
     await animation.load(playerIdleAnim);
     await animation.load(playerJumpAnim);
 
-    _xlObject = animation;
+    addChild(animation);
   }
 
   Player(this.name);

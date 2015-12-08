@@ -1,14 +1,8 @@
 part of libstreet;
 
-abstract class Entity extends Animatable {
+abstract class Entity extends Sprite implements Animatable {
   String id;
-  DisplayObject _xlObject;
   List actions = [];
-
-  get x => _xlObject.x;
-  get y => _xlObject.y;
-  set x(num x) => _xlObject.x = x;
-  set y(num y) => _xlObject.y = y;
 
   static BitmapFilter glow = new GlowFilter()
     ..color = Color.Orange
@@ -20,16 +14,16 @@ abstract class Entity extends Animatable {
   advanceTime(num time) {
     if (Player.current != null) {
       bool closeToPlayer = this != Player.current &&
-          new Point(_xlObject.x, _xlObject.y)
+          new Point(x, y)
                   .distanceTo(new Point(Player.current.x, Player.current.y)) <=
               200;
 
-      if (closeToPlayer && !_xlObject.filters.contains(Entity.glow)) {
-        _xlObject.filters.add(Entity.glow);
-        _xlObject.filters.add(Entity.glow);
+      if (closeToPlayer && !filters.contains(Entity.glow)) {
+        filters.add(Entity.glow);
+        filters.add(Entity.glow);
       }
-      if (!closeToPlayer && _xlObject.filters.contains(Entity.glow)) {
-        _xlObject.filters.clear();
+      if (!closeToPlayer && filters.contains(Entity.glow)) {
+        filters.clear();
       }
     }
   }

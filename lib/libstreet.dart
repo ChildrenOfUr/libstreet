@@ -1,6 +1,7 @@
 library libstreet;
 import 'package:stagexl/stagexl.dart';
 import 'dart:html' as html;
+import 'dart:math' as Math;
 import 'dart:async';
 
 part 'src/entity.dart';
@@ -24,6 +25,7 @@ abstract class StreetRenderer {
   static Juggler get juggler => stage.juggler;
   static RenderLoop _renderloop = new RenderLoop();
   static ResourceManager resourceManager = new ResourceManager();
+  static BitmapData pixel;
 
   static preload(Map streetData) async {
     // load layer images.
@@ -40,29 +42,26 @@ abstract class StreetRenderer {
   /// Sets up the initial stage variables.
   static init() {
     StageXL.stageOptions
-          ..antialias = false
+          ..antialias = true
           ..transparent = true
           ..backgroundColor = 0x00000000
           ..stageScaleMode = StageScaleMode.NO_SCALE
           ..stageAlign = StageAlign.TOP_LEFT;
     StageXL.bitmapDataLoadOptions.corsEnabled = true;
     _renderloop.addStage(stage);
+
+    Shape shape = new Shape();
+    shape.graphics.rect(0,0, 10, 10);
+    shape.graphics.fillColor(Color.White);
+    shape.applyCache(0, 0, 10, 10);
+    pixel = new BitmapData.fromRenderTextureQuad(shape.cache);
   }
 
-  static _setGradient(String top, String bottom) {
+  static setGradient(String top, String bottom) {
     canvas.style.background = "-webkit-linear-gradient(top, #$top, #$bottom)";
     canvas.style.background = "-moz-linear-gradient(top, #$top, #$bottom)";
     canvas.style.background = "-ms-linear-gradient(#$top, #$bottom)";
     canvas.style.background = "-o-linear-gradient(#$top, #$bottom)";
   }
 
-  static _addLayer(Layer layer) {
-    StreetRenderer.stage.addChild(layer);
-    StreetRenderer.stage.juggler.add(layer);
-  }
-
-  static _clearLayers() {
-    StreetRenderer.stage.children.clear();
-    StreetRenderer.stage.juggler.clear();
-  }
 }
