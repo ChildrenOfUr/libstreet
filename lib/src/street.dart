@@ -15,7 +15,7 @@ class Street extends DisplayObjectContainer {
   num get groundY => -(streetData['dynamic']['ground_y'] as num).abs();
 
   // Entity Management
-  EntityLayer entities;
+  EntityLayer entityLayer;
   CollisionLayer collisionLayer;
 
   // Constructor
@@ -34,11 +34,19 @@ class Street extends DisplayObjectContainer {
       String layerName = layer['name'].replaceAll(' ', '_');
       addChild(new ImageLayer(tsid, layerName));
       if (layerName == 'middleground') {
-        entities = new EntityLayer();
-        addChild(entities);
+        entityLayer = new EntityLayer(streetData);
+        addChild(entityLayer);
       }
     }
     collisionLayer = new CollisionLayer(streetData);
     addChild(collisionLayer);
+  }
+
+  /// Converts a 'stage' coordinate to a 'street' coordinate.
+  /// Takes two [num] and spits out a [Point].
+  Point localToStreet(num stageX, num stageY) {
+    num x = stageX + StreetRenderer.camera.x - StreetRenderer.camera.viewport.width/2 + bounds.left;
+    num y = stageY + StreetRenderer.camera.y - StreetRenderer.camera.viewport.height/2 + bounds.top;
+    return new Point(x,y);
   }
 }

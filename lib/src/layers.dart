@@ -68,9 +68,30 @@ class CollisionLayer extends Layer {
 }
 
 class EntityLayer extends Layer {
-  EntityLayer() {
+  Map streetData;
+  EntityLayer(this.streetData) {
     layerWidth = StreetRenderer.current.bounds.width;
     layerHeight = StreetRenderer.current.bounds.height;
+  }
+
+  // Adjusts the layers according to the camera position.
+  @override
+  render(RenderState renderState) {
+    num currentPercentX = (StreetRenderer.camera.x -
+            StreetRenderer.camera.viewport.width / 2) /
+        (StreetRenderer.current.bounds.width -
+            StreetRenderer.camera.viewport.width);
+    num currentPercentY = (StreetRenderer.camera.y -
+            StreetRenderer.camera.viewport.height / 2) /
+        (StreetRenderer.current.bounds.height -
+            StreetRenderer.camera.viewport.height);
+    num offsetX =
+        (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
+    num offsetY =
+        (layerHeight - StreetRenderer.camera.viewport.height) * currentPercentY;
+    x = -offsetX - streetData['dynamic']['l'];
+    y = -offsetY - streetData['dynamic']['t'];
+    super.render(renderState);
   }
 }
 

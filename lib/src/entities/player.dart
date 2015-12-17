@@ -1,7 +1,7 @@
 part of libstreet;
 
 
-class Player extends Entity {
+class Player extends PhysicsEntity {
   static Player current;
   String name;
   Animation animation;

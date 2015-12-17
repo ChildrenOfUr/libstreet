@@ -15,13 +15,16 @@ main() async {
   Street groddle = new Street(groddleDef);
   StreetRenderer.stage.addChild(groddle);
 
-
-  AnchorCircle a = new AnchorCircle(10, Color.Purple, Color.White);
-
-  groddle.collisionLayer.addChild(a);
-
-  a.x = 100;
-  a.y = 100;
+  groddle.onMouseClick.listen((e) async {
+    Point xy = groddle.localToStreet(e.stageX, e.stageY);
+    Player player = new Player("Paal");
+    await player.load();
+    player.y = xy.y;
+    player.x = xy.x;
+    player.animation.set('idle');
+    StreetRenderer.juggler.add(player);
+    groddle.entityLayer.addChild(player);
+  });
 
   html.document.onKeyPress.listen((event) {
 	  if(event.keyCode == 97) {

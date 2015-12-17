@@ -115,6 +115,7 @@ class CollisionLine extends Sprite{
   num secondaryColor = Color.Black;
 
   CollisionLine(Point a, Point b) {
+    mouseCursor = 'pointer';
     A = new AnchorCircle(5, primaryColor, Color.White, strokeWidth: 5);
     B = new AnchorCircle(5, secondaryColor, Color.White, strokeWidth: 5);
 
@@ -131,6 +132,17 @@ class CollisionLine extends Sprite{
     addChild(_line);
     addChild(A);
     addChild(B);
+
+    A.onDragEnd.listen((_) {
+      if (A.x < B.x) {
+        A.x = B.x;
+      }
+    });
+    B.onDragEnd.listen((_) {
+      if (B.x > A.x) {
+        B.x = A.x;
+      }
+    });
 
     _line.onMouseDown.listen((_) {
       if (canEdit)
@@ -176,8 +188,11 @@ class CollisionLine extends Sprite{
 
 class AnchorCircle extends Sprite {
   bool dragging = false;
+  StreamController _draggingStream = new StreamController.broadcast();
+  Stream get onDragEnd => _draggingStream.stream;
 
   AnchorCircle(num r, int fill, int stroke, {num strokeWidth : 0}) {
+    mouseCursor = 'pointer';
     Shape shape = new Shape();
     shape.graphics.circle(0,0,r);
     if (stroke != null)
@@ -194,6 +209,7 @@ class AnchorCircle extends Sprite {
     this.onMouseUp.listen((_) {
       dragging = false;
       this.stopDrag();
+      _draggingStream.add(null);
     });
   }
 }
