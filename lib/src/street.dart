@@ -1,5 +1,11 @@
 part of libstreet;
 
+/// A Sprite, aware of its position on a street.
+abstract class StreetSprite extends Sprite {
+  Point get street {
+    return StreetRenderer.localToStreet(localToGlobal(new Point(x, y)));
+  }
+}
 
 class Street extends DisplayObjectContainer {
   Map streetData;
@@ -40,13 +46,5 @@ class Street extends DisplayObjectContainer {
     }
     collisionLayer = new CollisionLayer(streetData);
     addChild(collisionLayer);
-  }
-
-  /// Converts a 'stage' coordinate to a 'street' coordinate.
-  /// Takes two [num] and spits out a [Point].
-  Point localToStreet(num stageX, num stageY) {
-    num x = stageX + StreetRenderer.camera.x - StreetRenderer.camera.viewport.width/2 + bounds.left;
-    num y = stageY + StreetRenderer.camera.y - StreetRenderer.camera.viewport.height/2 + bounds.top;
-    return new Point(x,y);
   }
 }

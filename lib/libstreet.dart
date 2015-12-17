@@ -66,4 +66,12 @@ abstract class StreetRenderer {
     canvas.style.background = "-o-linear-gradient(#$top, #$bottom)";
   }
 
+  /// Converts a 'stage' coordinate to a 'street' coordinate.
+  /// Takes two [num] and spits out a [Point].
+  static Point localToStreet(Point stage) {
+    num x = stage.x + StreetRenderer.camera.x - StreetRenderer.camera.viewport.width/2 + StreetRenderer.current.bounds.left;
+    num y = stage.y + StreetRenderer.camera.y - StreetRenderer.camera.viewport.height/2 + StreetRenderer.current.bounds.top;
+    return new Point(x,y);
+  }
+
 }

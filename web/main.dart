@@ -15,8 +15,9 @@ main() async {
   Street groddle = new Street(groddleDef);
   StreetRenderer.stage.addChild(groddle);
 
-  groddle.onMouseClick.listen((e) async {
-    Point xy = groddle.localToStreet(e.stageX, e.stageY);
+
+  groddle.onMouseRightClick.listen((e) async {
+    Point xy = StreetRenderer.localToStreet(new Point(e.stageX, e.stageY));
     Player player = new Player("Paal");
     await player.load();
     player.y = xy.y;
@@ -25,6 +26,7 @@ main() async {
     StreetRenderer.juggler.add(player);
     groddle.entityLayer.addChild(player);
   });
+
 
   html.document.onKeyPress.listen((event) {
 	  if(event.keyCode == 97) {

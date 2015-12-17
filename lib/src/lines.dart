@@ -114,10 +114,17 @@ class CollisionLine extends Sprite{
   num primaryColor = Color.Black;
   num secondaryColor = Color.Black;
 
+  num get slope {
+    return (B.street.y - A.street.y) / (B.street.x - A.street.x);
+  }
+  Point get start => new Point(A.x, A.y);
+  Point get end => new Point(B.x, B.y);
+
   CollisionLine(Point a, Point b) {
     mouseCursor = 'pointer';
     A = new AnchorCircle(5, primaryColor, Color.White, strokeWidth: 5);
     B = new AnchorCircle(5, secondaryColor, Color.White, strokeWidth: 5);
+
 
     A.x = a.x;
     A.y = a.y;
@@ -144,15 +151,9 @@ class CollisionLine extends Sprite{
       }
     });
 
-    _line.onMouseDown.listen((_) {
-      if (canEdit)
-      startDrag();
-    });
+    print(A.x.toString() + "/" + a.x.toString());
 
-    _line.onMouseUp.listen((_) {
-      if (canEdit)
-      stopDrag();
-    });
+    addChild(new AnchorCircle(50, Color.Aqua, Color.Red));
   }
 
   @override
@@ -186,7 +187,7 @@ class CollisionLine extends Sprite{
 }
 
 
-class AnchorCircle extends Sprite {
+class AnchorCircle extends StreetSprite {
   bool dragging = false;
   StreamController _draggingStream = new StreamController.broadcast();
   Stream get onDragEnd => _draggingStream.stream;
