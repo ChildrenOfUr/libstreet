@@ -31,7 +31,7 @@ class Street extends DisplayObjectContainer {
     layerMaps.sort( (Map A, Map B) => A['z'].compareTo(B['z']) );
     for (Map layer in layerMaps) {
       String layerName = layer['name'].replaceAll(' ', '_');
-      addChild(new ImageLayer(tsid, layerName));
+      addChild(new ImageLayer(tsid, layerName, streetData));
       if (layerName == 'middleground') {
         entityLayer = new EntityLayer(streetData);
         addChild(entityLayer);

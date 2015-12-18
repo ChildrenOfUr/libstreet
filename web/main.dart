@@ -1,5 +1,6 @@
 import 'package:stagexl/stagexl.dart';
 import 'dart:convert';
+import 'dart:async';
 import 'package:libstreet/libstreet.dart';
 import 'dart:html' as html;
 
@@ -15,7 +16,7 @@ main() async {
   Street groddle = new Street(groddleDef);
   StreetRenderer.stage.addChild(groddle);
 
-
+/*
   groddle.onMouseRightClick.listen((e) async {
     Point xy = StreetRenderer.localToStreet(new Point(e.stageX, e.stageY));
     Player player = new Player("Paal");
@@ -26,20 +27,34 @@ main() async {
     StreetRenderer.juggler.add(player);
     groddle.entityLayer.addChild(player);
   });
+*/
 
+  Player player = new Player("Paal");
+  await player.load();
+  player.y = groddle.bounds.top + 200;
+  player.x = groddle.bounds.left + 200;
+  player.animation.set('idle');
+  StreetRenderer.juggler.add(player);
+  groddle.entityLayer.addChild(player);
+
+
+  new Timer.periodic(new Duration(milliseconds: 15), (_) {
+    StreetRenderer.camera.x = player.x;
+    StreetRenderer.camera.y = player.y;
+  });
 
   html.document.onKeyPress.listen((event) {
 	  if(event.keyCode == 97) {
-			StreetRenderer.camera.x -= 10;
+			player.x -= 10;
     }
 		if(event.keyCode == 100) {
-			StreetRenderer.camera.x += 10;
+			player.x += 10;
     }
 		if(event.keyCode == 119) {
-		  StreetRenderer.camera.y -= 10;
+		  player.y -= 1000;
     }
 		if(event.keyCode == 115) {
-			StreetRenderer.camera.y += 10;
+			player.y += 10;
     }
 	});
 }

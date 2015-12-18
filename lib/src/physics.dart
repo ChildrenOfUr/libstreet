@@ -5,21 +5,7 @@ abstract class Physics {
   static Vec maxVelocity = new Vec(0, 5);
 
   static simulate(PhysicsEntity entity) {
-    num cameFrom = entity.y;
-
-    // process collisions with these objects.
-    Platform bestPlatform = entity._getBestPlatform(cameFrom);
-    if (bestPlatform != null) {
-      num goingTo = entity.y;
-      num slope = bestPlatform.slope;
-      num yInt = bestPlatform.start.y - slope * bestPlatform.start.x;
-      num lineY = slope * entity.x + yInt;
-
-      if (goingTo >= lineY) {
-        entity.y = lineY - entity.height - StreetRenderer.current.groundY;
-        entity.acceleration = new Vec(entity.acceleration.x, 0);
-      }
-    }
+    num oldY = entity.y;
 
     // update physics vars.
     entity.velocity += entity.acceleration;
@@ -32,6 +18,20 @@ abstract class Physics {
     }
     entity.y += entity.velocity.y;
     entity.x += entity.velocity.x;
+
+    // process collisions with these objects.
+    Platform bestPlatform = entity._getBestPlatform(oldY);
+    if (bestPlatform != null) {
+      num goingTo = entity.y;
+      num slope = bestPlatform.slope;
+      num yInt = bestPlatform.start.y - slope * bestPlatform.start.x;
+      num lineY = slope * entity.x + yInt;
+
+      if (goingTo >= lineY - 10 && goingTo <= lineY + 10) {
+        entity.y = lineY;
+        entity.acceleration = new Vec(entity.acceleration.x, 0);
+      }
+    }
   }
 }
 
@@ -45,7 +45,7 @@ abstract class PhysicsEntity extends Entity {
     Physics.simulate(this);
   }
 
-  Platform _getBestPlatform(num cameFrom) {
+  Platform _getBestPlatform(num oldY) {
     Platform bestPlatform;
     num bestDiffY = double.INFINITY;
 
@@ -61,14 +61,11 @@ abstract class PhysicsEntity extends Entity {
           });
 
 
-    list dy = [];
     for (Platform platform in list) {
       num slope = platform.slope;
       num yInt = platform.start.y - slope * platform.start.x;
       num lineY = slope * x + yInt;
-      num diffY = (cameFrom - lineY).abs();
-
-      dy.add(slope);
+      num diffY = (oldY - lineY).abs();
 
       if (bestPlatform == null) {
         bestPlatform = platform;
