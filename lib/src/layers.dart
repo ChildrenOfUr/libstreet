@@ -25,9 +25,9 @@ class CollisionLayer extends Layer {
       Platform line = new Platform(
           lineMap['id'],
           new Point(
-              lineMap['endpoints'].first['x'], lineMap['endpoints'].first['y']),
+              lineMap['endpoints'].last['x'], lineMap['endpoints'].last['y']),
           new Point(
-              lineMap['endpoints'].last['x'], lineMap['endpoints'].last['y']));
+              lineMap['endpoints'].first['x'], lineMap['endpoints'].first['y']));
       addChild(line);
     }
 

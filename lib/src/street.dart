@@ -1,12 +1,5 @@
 part of libstreet;
 
-/// A Sprite, aware of its position on a street.
-abstract class StreetSprite extends Sprite {
-  Point get street {
-    return StreetRenderer.localToStreet(localToGlobal(new Point(x, y)));
-  }
-}
-
 class Street extends DisplayObjectContainer {
   Map streetData;
 
@@ -45,6 +38,7 @@ class Street extends DisplayObjectContainer {
       }
     }
     collisionLayer = new CollisionLayer(streetData);
+    //collisionLayer.visible = false;
     addChild(collisionLayer);
   }
 }

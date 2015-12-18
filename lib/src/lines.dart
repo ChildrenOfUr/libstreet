@@ -67,19 +67,19 @@ class CollisionRect extends Sprite {
   @override
   render(RenderState renderState) {
 
-    if (A.x > B.x - 1 && A.dragging) {
+    if (A.x < B.x - 1 && A.dragging) {
       A.x = B.x;
       A.dragging = false;
       A.stopDrag();
     }
-    if (B.x < A.x + 5 && B.dragging) {
+    if (B.x > A.x + 5 && B.dragging) {
       B.x = A.x;
     }
 
-    if (A.y > B.y - 1 && A.dragging) {
+    if (A.y < B.y - 1 && A.dragging) {
       A.y = B.y;
     }
-    if (B.y < A.y + 5 && B.dragging) {
+    if (B.y > A.y + 5 && B.dragging) {
       B.y = A.y;
     }
 
@@ -114,11 +114,11 @@ class CollisionLine extends Sprite{
   num primaryColor = Color.Black;
   num secondaryColor = Color.Black;
 
-  num get slope {
-    return (B.street.y - A.street.y) / (B.street.x - A.street.x);
-  }
   Point get start => new Point(A.x, A.y);
   Point get end => new Point(B.x, B.y);
+  num get slope {
+    return (end.y - start.y) / (end.x - start.x);
+  }
 
   CollisionLine(Point a, Point b) {
     mouseCursor = 'pointer';
@@ -141,29 +141,25 @@ class CollisionLine extends Sprite{
     addChild(B);
 
     A.onDragEnd.listen((_) {
-      if (A.x < B.x) {
+      if (A.x > B.x) {
         A.x = B.x;
       }
     });
     B.onDragEnd.listen((_) {
-      if (B.x > A.x) {
+      if (B.x < A.x) {
         B.x = A.x;
       }
     });
-
-    print(A.x.toString() + "/" + a.x.toString());
-
-    addChild(new AnchorCircle(50, Color.Aqua, Color.Red));
   }
 
   @override
   render(RenderState renderState) {
 
-    if (B.x > A.x && B.dragging) {
+    if (B.x < A.x && B.dragging) {
       B.x = A.x;
     }
 
-    if (A.x < B.x && A.dragging) {
+    if (A.x > B.x && A.dragging) {
       A.x = B.x;
     }
 
@@ -187,7 +183,7 @@ class CollisionLine extends Sprite{
 }
 
 
-class AnchorCircle extends StreetSprite {
+class AnchorCircle extends Sprite {
   bool dragging = false;
   StreamController _draggingStream = new StreamController.broadcast();
   Stream get onDragEnd => _draggingStream.stream;
