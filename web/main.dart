@@ -45,16 +45,16 @@ main() async {
 
   html.document.onKeyPress.listen((event) {
 	  if(event.keyCode == 97) {
-			player.x -= 10;
+			player.x -= 5;
     }
 		if(event.keyCode == 100) {
-			player.x += 10;
+			player.x += 5;
     }
 		if(event.keyCode == 119) {
 		  player.y -= 1000;
     }
 		if(event.keyCode == 115) {
-			player.y += 10;
+			player.y += 50;
     }
 	});
 }

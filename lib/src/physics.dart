@@ -2,7 +2,7 @@ part of libstreet;
 
 abstract class Physics {
   static Vec gravity = new Vec(0, 1);
-  static Vec maxVelocity = new Vec(0, 5);
+  static Vec maxVelocity = new Vec(0, 6);
 
   static simulate(PhysicsEntity entity) {
     num oldY = entity.y;
@@ -22,12 +22,11 @@ abstract class Physics {
     // process collisions with these objects.
     Platform bestPlatform = entity._getBestPlatform(oldY);
     if (bestPlatform != null) {
-      num goingTo = entity.y;
       num slope = bestPlatform.slope;
       num yInt = bestPlatform.start.y - slope * bestPlatform.start.x;
       num lineY = slope * entity.x + yInt;
 
-      if (goingTo >= lineY - 10 && goingTo <= lineY + 10) {
+      if (entity.y >= lineY && oldY <= lineY + 30) {
         entity.y = lineY;
         entity.acceleration = new Vec(entity.acceleration.x, 0);
       }
