@@ -1,6 +1,5 @@
 library libstreet;
 import 'package:stagexl/stagexl.dart';
-import 'package:piecemeal/piecemeal.dart';
 import 'dart:html' as html;
 import 'dart:math' as Math;
 import 'dart:async';
@@ -15,7 +14,7 @@ part 'src/street.dart';
 part 'src/lines.dart';
 
 part 'src/animation.dart';
-part 'src/physics.dart';
+part 'src/entities/physics.dart';
 
 
 abstract class StreetRenderer {

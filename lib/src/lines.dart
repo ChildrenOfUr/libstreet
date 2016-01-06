@@ -175,8 +175,6 @@ class CollisionLine extends Sprite{
 
 class AnchorCircle extends Sprite {
   bool dragging = false;
-  StreamController _draggingStream = new StreamController.broadcast();
-  Stream get onDragEnd => _draggingStream.stream;
 
   AnchorCircle(num r, int fill, int stroke, {num strokeWidth : 0}) {
     mouseCursor = 'pointer';
@@ -196,7 +194,6 @@ class AnchorCircle extends Sprite {
     this.onMouseUp.listen((_) {
       dragging = false;
       this.stopDrag();
-      _draggingStream.add(null);
     });
   }
 }

@@ -3,8 +3,3 @@ description: Rendering coU streets
 version: 0.0.0
 dependencies:
   stagexl: "^0.12.0+1"
-  piecemeal: any
-  transmit:
-        git:
-          ref: master
-          url: git://github.com/ChildrenOfUr/transmit.git
