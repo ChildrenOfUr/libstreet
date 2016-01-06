@@ -3,46 +3,50 @@ part of libstreet;
 abstract class Physics {
   static Vec gravity = new Vec(0, 1);
   static Vec maxVelocity = new Vec(0, 6);
-
-  static simulate(PhysicsEntity entity) {
-    num oldY = entity.y;
-
-    // update physics vars.
-    entity.velocity += entity.acceleration;
-    entity.velocity += gravity;
-    if (entity.velocity.x > Physics.maxVelocity.x) {
-      entity.velocity = new Vec(Physics.maxVelocity.x, entity.velocity.y);
-    }
-    if (entity.velocity.y > Physics.maxVelocity.y) {
-      entity.velocity = new Vec(entity.velocity.x, Physics.maxVelocity.y);
-    }
-    entity.y += entity.velocity.y;
-    entity.x += entity.velocity.x;
-
-    // process collisions with these objects.
-    Platform bestPlatform = entity._getBestPlatform(oldY);
-    if (bestPlatform != null) {
-      num slope = bestPlatform.slope;
-      num yInt = bestPlatform.start.y - slope * bestPlatform.start.x;
-      num lineY = slope * entity.x + yInt;
-
-      if (entity.y >= lineY && oldY <= lineY + 30) {
-        entity.y = lineY;
-        entity.acceleration = new Vec(entity.acceleration.x, 0);
-      }
-    }
-  }
 }
 
 abstract class PhysicsEntity extends Entity {
+  // bools
+  bool onGround = false;
+
   Vec velocity = new Vec(0, 0);
   Vec acceleration = new Vec(0, 0);
 
   @override
   advanceTime(num time) {
     super.advanceTime(time);
-    Physics.simulate(this);
+    num oldY = y;
+    // update physics vars.
+    velocity += acceleration;
+    velocity += Physics.gravity;
+    if (velocity.x > Physics.maxVelocity.x) {
+      velocity = new Vec(Physics.maxVelocity.x, velocity.y);
+    }
+    if (velocity.y > Physics.maxVelocity.y) {
+      velocity = new Vec(velocity.x, Physics.maxVelocity.y);
+    }
+    y += velocity.y;
+    x += velocity.x;
+
+    // process collisions with these objects.
+    Platform bestPlatform = _getBestPlatform(oldY);
+    if (bestPlatform != null) {
+      num slope = bestPlatform.slope;
+      num yInt = bestPlatform.start.y - slope * bestPlatform.start.x;
+      num lineY = slope * x + yInt;
+
+      if (y >= lineY && oldY <= lineY + 30) {
+        onGround = true;
+        y = lineY;
+        acceleration = new Vec(acceleration.x, 0);
+      } else if (onGround == true) {
+        onGround = false;
+      }
+
+    }
   }
+
+  impulse(int x, int y) {}
 
   Platform _getBestPlatform(num oldY) {
     Platform bestPlatform;
@@ -58,7 +62,6 @@ abstract class PhysicsEntity extends Entity {
             num yIntB = b.start.y - b.slope * b.start.x;
             return yIntA.compareTo(yIntB);
           });
-
 
     for (Platform platform in list) {
       num slope = platform.slope;

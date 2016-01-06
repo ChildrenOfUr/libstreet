@@ -60,8 +60,8 @@ class CollisionLayer extends Layer {
         (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
     num offsetY =
         (layerHeight - StreetRenderer.camera.viewport.height) * currentPercentY;
-    x = -offsetX;
-    y = -offsetY;
+    x = -offsetX  - streetData['dynamic']['l'];
+    y = -offsetY  - streetData['dynamic']['t'];
     super.render(renderState);
   }
 
@@ -89,8 +89,8 @@ class EntityLayer extends Layer {
         (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
     num offsetY =
         (layerHeight - StreetRenderer.camera.viewport.height) * currentPercentY;
-    x = -offsetX;
-    y = -offsetY;
+        x = -offsetX  - streetData['dynamic']['l'];
+        y = -offsetY  - streetData['dynamic']['t'];
     super.render(renderState);
   }
 }
@@ -121,8 +121,8 @@ class ImageLayer extends Layer {
         (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
     num offsetY =
         (layerHeight - StreetRenderer.camera.viewport.height) * currentPercentY;
-    x = -offsetX + streetData['dynamic']['l'];
-    y = -offsetY + streetData['dynamic']['t'];
+    x = -offsetX;
+    y = -offsetY;
     super.render(renderState);
   }
 }

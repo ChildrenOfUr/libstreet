@@ -5,7 +5,7 @@ import 'dart:html' as html;
 import 'dart:math' as Math;
 import 'dart:async';
 
-part 'src/entity.dart';
+part 'src/entities/entity.dart';
 part 'src/entities/player.dart';
 part 'src/entities/npc.dart';
 
@@ -52,6 +52,7 @@ abstract class StreetRenderer {
     StageXL.bitmapDataLoadOptions.corsEnabled = true;
     _renderloop.addStage(stage);
 
+    // create a general purpose white pixel bitmapdata.
     Shape shape = new Shape();
     shape.graphics.rect(0,0, 10, 10);
     shape.graphics.fillColor(Color.White);
@@ -59,6 +60,7 @@ abstract class StreetRenderer {
     pixel = new BitmapData.fromRenderTextureQuad(shape.cache);
   }
 
+  /// set the gradient of the background.
   static setGradient(String top, String bottom) {
     canvas.style.background = "-webkit-linear-gradient(top, #$top, #$bottom)";
     canvas.style.background = "-moz-linear-gradient(top, #$top, #$bottom)";

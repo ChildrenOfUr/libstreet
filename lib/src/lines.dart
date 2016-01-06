@@ -114,8 +114,18 @@ class CollisionLine extends Sprite{
   num primaryColor = Color.Black;
   num secondaryColor = Color.Black;
 
-  Point get start => new Point(A.x, A.y);
-  Point get end => new Point(B.x, B.y);
+  Point get start {
+    if (A.x < B.x)
+      return new Point(A.x, A.y);
+    else
+      return new Point(B.x, B.y);
+  }
+  Point get end {
+    if (A.x > B.x)
+      return new Point(A.x, A.y);
+    else
+      return new Point(B.x, B.y);
+  }
   num get slope {
     return (end.y - start.y) / (end.x - start.x);
   }
@@ -139,30 +149,10 @@ class CollisionLine extends Sprite{
     addChild(_line);
     addChild(A);
     addChild(B);
-
-    A.onDragEnd.listen((_) {
-      if (A.x > B.x) {
-        A.x = B.x;
-      }
-    });
-    B.onDragEnd.listen((_) {
-      if (B.x < A.x) {
-        B.x = A.x;
-      }
-    });
   }
 
   @override
   render(RenderState renderState) {
-
-    if (B.x < A.x && B.dragging) {
-      B.x = A.x;
-    }
-
-    if (A.x > B.x && A.dragging) {
-      A.x = B.x;
-    }
-
     _line.x = A.x;
     _line.y = A.y;
     _line.children.first.width = new Point(A.x, A.y).distanceTo(new Point(B.x,B.y));

@@ -17,17 +17,29 @@ class Animation extends Sprite {
 
     for (int i = state[name].frameDurations.length - 1; i >= 0; i--) {
       state[name].frameDurations[i] = 0.033 / speed;
-    };
+    }
+    ;
     state[name].gotoAndPlay(0);
     current = name;
   }
 
   /// Populates the [Animation] with the included states.
   load(Map data) async {
-    // TODO lets do the loading properly as soon as we can.
-    html.ImageElement image = new html.ImageElement(src: data['image']);
-    await image.onLoad.first;
-    BitmapData bitmapData = new BitmapData.fromImageElement(image);
+    // if the data is a batch of animations, load each individually.
+    if (data.keys.contains('batch')) {
+      for (Map subdata in data['batch']) {
+        await load(subdata);
+      }
+      return;
+    }
+
+    if (!StreetRenderer.resourceManager.containsBitmapData(data['image'])) {
+      StreetRenderer.resourceManager
+          .addBitmapData(data['image'], data['image']);
+      await StreetRenderer.resourceManager.load();
+    }
+
+    BitmapData bitmapData = StreetRenderer.resourceManager.getBitmapData(data['image']);
     SpriteSheet sheet = new SpriteSheet(bitmapData,
         bitmapData.width ~/ data['width'], bitmapData.height ~/ data['height']);
 
