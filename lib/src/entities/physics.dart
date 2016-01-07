@@ -9,21 +9,26 @@ abstract class Physics {
 abstract class PhysicsEntity extends Entity {
   // bools
   bool isOnGround = false;
+  bool isTouchingLadder = false;
+  bool activeClimb = false;
+
   Vector velocity = new Vector.zero();
 
   @override
   advanceTime(num time) {
     super.advanceTime(time);
-    Vector old = new Vector(x,y);
+    Vector old = new Vector(x, y);
 
     // friction and gravity
     if (velocity.x > 0.01 || velocity.x < -0.01) {
-      velocity.x = velocity.x* (1 - Physics.friction);
+      velocity.x = velocity.x * (1 - Physics.friction);
     } else if (velocity.x != 0) {
       velocity.x = 0;
     }
-    if (!isOnGround) {
+    if (!isOnGround && !activeClimb) {
       velocity.y += Physics.gravity;
+    } else if (activeClimb && (velocity.y > 0.01 || velocity.y < -0.01) ) {
+      velocity.y = velocity.y * (1 - Physics.friction);
     }
 
     // maximum velocity
@@ -43,20 +48,29 @@ abstract class PhysicsEntity extends Entity {
       num slope = bestPlatform.slope;
       num yInt = bestPlatform.start.y - slope * bestPlatform.start.x;
       num lineY = slope * x + yInt;
-
-      if (y >= lineY && old.y <= lineY + 30) {
-        isOnGround = true;
+      if (y >= lineY && old.y <= lineY + 30 && velocity.y >= 0 && !activeClimb) {
         y = lineY;
         velocity.y = 0;
-      } else if (isOnGround == true) {
+      }
+      if (y >= lineY - 10 && y <= lineY + 10) {
+        isOnGround = true;
+      } else {
         isOnGround = false;
       }
+    }
 
+    // process collisions with ladders
+    List ladders = StreetRenderer.current.collisionLayer.children
+        .where((Sprite child) => child is Ladder);
+    for (Ladder ladder in ladders) {
+      isTouchingLadder = ladder.collisionBox.contains(x, y);
+      if (isTouchingLadder)
+      break;
     }
   }
 
   impulse(int x, int y) {
-    velocity += new Vector(x,y);
+    velocity += new Vector(x, y);
   }
 
   Platform _getBestPlatform(num oldY) {
@@ -99,21 +113,25 @@ class Vector {
   num x = 0;
   num y = 0;
 
-  Vector(this.x,this.y);
+  Vector(this.x, this.y);
   Vector.zero();
 
   operator /(num other) {
-    return new Vector(x/other, y/other);
+    return new Vector(x / other, y / other);
   }
+
   operator *(num other) {
-    return new Vector(x*other, y*other);
+    return new Vector(x * other, y * other);
   }
+
   operator +(Vector other) {
-    return new Vector(x+other.x, y+other.y);
+    return new Vector(x + other.x, y + other.y);
   }
+
   operator -(Vector other) {
-    return new Vector(x-other.x, y-other.y);
+    return new Vector(x - other.x, y - other.y);
   }
+
   @override toString() {
     return '$x, $y';
   }

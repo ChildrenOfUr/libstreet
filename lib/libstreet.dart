@@ -4,14 +4,16 @@ import 'dart:html' as html;
 import 'dart:math' as Math;
 import 'dart:async';
 
+part 'src/keyboard.dart';
+
 part 'src/entities/entity.dart';
 part 'src/entities/player.dart';
 part 'src/entities/npc.dart';
 
-part 'src/camera.dart';
-part 'src/layers.dart';
-part 'src/street.dart';
-part 'src/lines.dart';
+part 'src/street/camera.dart';
+part 'src/street/layers.dart';
+part 'src/street/street.dart';
+part 'src/street/lines.dart';
 
 part 'src/animation.dart';
 part 'src/entities/physics.dart';
@@ -42,6 +44,7 @@ abstract class StreetRenderer {
 
   /// Sets up the initial stage variables.
   static init() {
+    Keyboard.init();
     StageXL.stageOptions
           ..antialias = true
           ..transparent = true

@@ -18,7 +18,7 @@ class Animation extends Sprite {
     for (int i = state[name].frameDurations.length - 1; i >= 0; i--) {
       state[name].frameDurations[i] = 0.033 / speed;
     }
-    ;
+
     state[name].gotoAndPlay(0);
     current = name;
   }

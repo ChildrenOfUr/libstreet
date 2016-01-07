@@ -26,22 +26,6 @@ main() async {
 
   new Timer.periodic(new Duration(milliseconds:15), (_) {
     StreetRenderer.camera.x = paal.x - groddle.bounds.left;
-    StreetRenderer.camera.y = paal.y - groddle.bounds.top;
+    StreetRenderer.camera.y = paal.y - 100 - groddle.bounds.top;
   });
-
-  html.document.onKeyPress.listen((event) {
-	  if(event.keyCode == 97) {
-			paal.impulse(-10, 0);
-    }
-		if(event.keyCode == 100) {
-		  paal.impulse(10, 0);
-    }
-		if(event.keyCode == 119) {
-      if (paal.isOnGround)
-		  paal.impulse(0, -20);
-    }
-		if(event.keyCode == 115) {
-		  paal.impulse(0, 10);
-    }
-	});
 }

@@ -8,4 +8,8 @@ class NPC extends Entity {
   load() async {
 
   }
+
+  update() {
+
+  }
 }

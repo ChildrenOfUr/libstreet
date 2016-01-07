@@ -29,6 +29,7 @@ class CollisionRect extends Sprite {
   AnchorCircle A;
   AnchorCircle B;
 
+  Rectangle get collisionBox => new Rectangle(A.x, A.y, B.x - A.x, B.y - A.y);
   Sprite _rect = new Sprite();
 
   bool canEdit = true;

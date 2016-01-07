@@ -38,7 +38,7 @@ class Street extends DisplayObjectContainer {
       }
     }
     collisionLayer = new CollisionLayer(streetData);
-    //collisionLayer.visible = false;
+    collisionLayer.visible = false;
     addChild(collisionLayer);
   }
 }

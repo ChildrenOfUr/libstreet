@@ -2,9 +2,12 @@ part of libstreet;
 
 abstract class Entity extends Sprite implements Animatable {
   String id;
-  List actions = [];
+  Animation animation;
+  StreamController<int> _onUpdate = new StreamController();
+  Stream<int> get onUpdate => _onUpdate.stream;
 
-  static BitmapFilter glow = new GlowFilter()
+  bool glowing = false;
+  static BitmapFilter _glow = new GlowFilter()
     ..color = Color.Orange
     ..quality = 3
     ..blurX = 10
@@ -12,20 +15,14 @@ abstract class Entity extends Sprite implements Animatable {
 
   @override
   advanceTime(num time) {
-    if (Player.current != null) {
-      bool closeToPlayer = this != Player.current &&
-          new Point(x, y)
-                  .distanceTo(new Point(Player.current.x, Player.current.y)) <=
-              200;
-
-      if (closeToPlayer && !filters.contains(Entity.glow)) {
-        filters.add(Entity.glow);
-        filters.add(Entity.glow);
-      }
-      if (!closeToPlayer && filters.contains(Entity.glow)) {
-        filters.clear();
-      }
+    if (glowing && !filters.contains(_glow)) {
+      filters.add(_glow);
+      filters.add(_glow);
     }
+    if (!glowing && filters.contains(_glow)) {
+      filters.clear();
+    }
+    _onUpdate.add(time);
   }
 
   Future load();
