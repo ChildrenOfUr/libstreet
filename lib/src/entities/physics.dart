@@ -69,7 +69,7 @@ abstract class PhysicsEntity extends Entity {
     }
   }
 
-  impulse(int x, int y) {
+  impulse(num x, num y) {
     velocity += new Vector(x, y);
   }
 

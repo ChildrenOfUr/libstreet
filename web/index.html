@@ -6,54 +6,21 @@
     <script src="packages/browser/dart.js" async></script>
     <title>libstreet</title>
     <style>
-    #game {
-      position:absolute;
-      width:100%;
-      max-width:calc(1024px);
-      min-width:calc(300px - 40px);
-      height:calc(100% - 140px);
-      max-height: 1024px;
-      border-radius:10px;
-      /* this fixes the overflow:hidden in Chrome not clipping it's contents to the border-radius
-      more information here: http://stackoverflow.com/questions/5736503/how-to-make-css3-rounded-corners-hide-overflow-in-chrome-opera*/
-      -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-      overflow:hidden;
-      z-index:0;
-    }
-
 canvas#street {
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
+width:1024px;
+height:720px;
 box-shadow:inset 0 0 100px 19px rgba(0,0,0,0.2);
 border-radius:10px;
 }
-
-#world {
-position: absolute;
-top:0;
-left:0;
-width: 100%;
-height: 100%;
-transition: transform 2s ease-in-out;
-}
-
     </style>
 
 </head>
 <body style="background:#eee">
-
-<main>
-<div id="game">
-    <!-- Game Elements -->
-    <div id="world">
-        <canvas id="street"></canvas>
-    </div>
-</div>
-</main>
-
-
+<canvas id="street"></canvas>
+<br>
+<input id="input" type="text"/><button id="load">load</button>
+<br>
+<button id="snap">snap!</button>
+<br>
 </body>
 </html>

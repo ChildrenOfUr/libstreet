@@ -22,12 +22,12 @@ abstract class Keyboard {
 
   static init() {
     if (started == false) {
-      html.document.onKeyDown.listen((html.KeyboardEvent e) {
+      StreetRenderer.canvas.onKeyDown.listen((html.KeyboardEvent e) {
         if (!_pressedKeys.contains(e.keyCode) && active) {
           _pressedKeys.add(e.keyCode);
         }
       });
-      html.document.onKeyUp.listen((html.KeyboardEvent e) {
+      StreetRenderer.canvas.onKeyUp.listen((html.KeyboardEvent e) {
         if (_pressedKeys.contains(e.keyCode)) {
           _pressedKeys.remove(e.keyCode);
           _memory.add(e.keyCode);
