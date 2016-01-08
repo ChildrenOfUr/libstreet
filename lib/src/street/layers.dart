@@ -127,6 +127,47 @@ class ImageLayer extends Layer {
   }
 }
 
+class GradientLayer extends Layer {
+  Map streetData;
+  GradientLayer(this.streetData) {
+    String top = streetData['gradient']['top'];
+    String bottom = streetData['gradient']['bottom'];
+
+    Shape shape = new Shape();
+    shape.graphics.rect(0, 0, StreetRenderer.current.bounds.width, StreetRenderer.current.bounds.height);
+    var gradient = new GraphicsGradient.linear(0, 0, 0, StreetRenderer.current.bounds.height);
+    gradient.addColorStop(0, int.parse('0xFF$top'));
+    gradient.addColorStop(1, int.parse('0xFF$bottom'));
+    shape.graphics.fillGradient(gradient);
+    shape.applyCache(0, 0, StreetRenderer.current.bounds.width, StreetRenderer.current.bounds.height);
+    BitmapData bitmapData = new BitmapData.fromRenderTextureQuad(shape.cache);
+    Bitmap layerBitmap = new Bitmap(bitmapData);
+    addChild(layerBitmap);
+
+    layerWidth = layerBitmap.width;
+    layerHeight = layerBitmap.height;
+  }
+
+  @override
+  render(RenderState renderState) {
+    num currentPercentX = (StreetRenderer.camera.x -
+            StreetRenderer.camera.viewport.width / 2) /
+        (StreetRenderer.current.bounds.width -
+            StreetRenderer.camera.viewport.width);
+    num currentPercentY = (StreetRenderer.camera.y -
+            StreetRenderer.camera.viewport.height / 2) /
+        (StreetRenderer.current.bounds.height -
+            StreetRenderer.camera.viewport.height);
+    num offsetX =
+        (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
+    num offsetY =
+        (layerHeight - StreetRenderer.camera.viewport.height) * currentPercentY;
+    x = -offsetX;
+    y = -offsetY;
+    super.render(renderState);
+  }
+}
+
 abstract class Layer extends Sprite {
   num layerWidth;
   num layerHeight;

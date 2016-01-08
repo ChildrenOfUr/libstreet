@@ -14,31 +14,54 @@ class Street extends DisplayObjectContainer {
   num get groundY => -(streetData['dynamic']['ground_y'] as num).abs();
 
   // Entity Management
-  EntityLayer entityLayer;
+  EntityLayer playerLayer;
+  EntityLayer quoinLayer;
+  EntityLayer npcLayer;
+
   CollisionLayer collisionLayer;
 
   // Constructor
   Street(this.streetData) {
     StreetRenderer.current = this;
-
-    // set the canvas gradient.
-    String top = streetData['gradient']['top'];
-    String bottom = streetData['gradient']['bottom'];
-    StreetRenderer.setGradient(top, bottom);
-
     // adds layers
+    addChild(new GradientLayer(streetData));
+
     List layerMaps = new List.from(streetData['dynamic']['layers'].values);
     layerMaps.sort( (Map A, Map B) => A['z'].compareTo(B['z']) );
     for (Map layer in layerMaps) {
       String layerName = layer['name'].replaceAll(' ', '_');
       addChild(new ImageLayer(tsid, layerName, streetData));
       if (layerName == 'middleground') {
-        entityLayer = new EntityLayer(streetData);
-        addChild(entityLayer);
+        quoinLayer = new EntityLayer(streetData);
+        addChild(quoinLayer);
+        npcLayer = new EntityLayer(streetData);
+        addChild(npcLayer);
+        playerLayer = new EntityLayer(streetData);
+        addChild(playerLayer);
       }
     }
     collisionLayer = new CollisionLayer(streetData);
     collisionLayer.visible = false;
     addChild(collisionLayer);
   }
+
+  spawnNPC(int x, int y, NPC npc) async {
+    await npc.load();
+    npc.x = x + bounds.left;
+    npc.y = y + bounds.top;
+    StreetRenderer.juggler.add(npc);
+    npcLayer.addChild(npc);
+  }
+
+  spawnQuoin(int x, int y, String type, int value) async {
+    Quoin quoin = new Quoin();
+    await quoin.load();
+    quoin.x = x + bounds.left;
+    quoin.y = y + bounds.top;
+    quoin.animation.set(type);
+    quoin.value = value;
+    StreetRenderer.juggler.add(quoin);
+    quoinLayer.addChild(quoin);
+  }
+
 }

@@ -9,43 +9,67 @@ ResourceManager resourceManager = new ResourceManager();
 main() async {
   StreetRenderer.init();
 
-  Timer periodic;
-
   html.querySelector('#snap').onClick.listen((_) async {
     String dataUrl = StreetRenderer.snap();
     html.document.body.append(new html.ImageElement(src: dataUrl));
   });
 
-  html.querySelector('#load').onClick.listen((_) async {
-    String file = (html.querySelector('#input') as html.InputElement).value;
-
-    if (periodic != null) {
-      periodic.cancel();
-    }
-
-    if (!resourceManager.containsTextFile(file)) {
-      resourceManager.addTextFile(file, '$file.json');
-      await resourceManager.load();
-    }
-    Map def = JSON.decode(resourceManager.getTextFile(file));
-
+    resourceManager.addTextFile('mira.json', 'mira.json');
+    await resourceManager.load();
+    Map def = JSON.decode(resourceManager.getTextFile('mira.json'));
     await StreetRenderer.preload(def);
     Street street = new Street(def);
     StreetRenderer.stage.children.clear();
     StreetRenderer.juggler.clear();
     StreetRenderer.stage.addChild(street);
 
+
+    resourceManager.addTextFile('ents', 'ents.json');
+    await resourceManager.load();
+    Map ents = JSON.decode(resourceManager.getTextFile('ents'));
+    List entities = ents['entities'];
+
+    for (Map entdef in entities) {
+      if (entdef['type'] == 'Img') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'img', 0);
+      }
+      if (entdef['type'] == 'Mood') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'mood', 0);
+      }
+      if (entdef['type'] == 'Quarazy') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'quarazy', 0);
+      }
+      if (entdef['type'] == 'Energy') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'energy', 0);
+      }
+      if (entdef['type'] == 'Currant') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'currant', 0);
+      }
+      if (entdef['type'] == 'Mystery') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'mystery', 0);
+      }
+      if (entdef['type'] == 'Favor') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'favor', 0);
+      }
+      if (entdef['type'] == 'Time') {
+        street.spawnQuoin(entdef['x'], entdef['y'], 'time', 0);
+      }
+      if (entdef['type'] == 'Piggy') {
+        Piggy piggy = new Piggy();
+        street.spawnNPC(entdef['x'], entdef['y'], piggy);
+      }
+    }
+
     Player paal = new Player('paal');
+    Player.current = paal;
     await paal.load();
     paal.y = street.bounds.top + 200;
     paal.x = street.bounds.left + 200;
-    paal.animation.set('idle');
     StreetRenderer.juggler.add(paal);
-    street.entityLayer.addChild(paal);
+    street.playerLayer.addChild(paal);
 
-    periodic = new Timer.periodic(new Duration(milliseconds: 15), (_) {
+    new Timer.periodic(new Duration(milliseconds: 15), (_) {
       StreetRenderer.camera.x = paal.x - street.bounds.left;
       StreetRenderer.camera.y = paal.y - 100 - street.bounds.top;
     });
-  });
 }

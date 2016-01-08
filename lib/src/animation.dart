@@ -36,8 +36,8 @@ class Animation extends Sprite {
     if (!StreetRenderer.resourceManager.containsBitmapData(data['image'])) {
       StreetRenderer.resourceManager
           .addBitmapData(data['image'], data['image']);
-      await StreetRenderer.resourceManager.load();
     }
+    await StreetRenderer.resourceManager.load();
 
     BitmapData bitmapData = StreetRenderer.resourceManager.getBitmapData(data['image']);
     SpriteSheet sheet = new SpriteSheet(bitmapData,
@@ -66,12 +66,7 @@ class Animation extends Sprite {
       state[name] = new FlipBook(animationFrames);
       state[name]
         ..loop = animationData['loop'] ?? false
-        ..setTransform(-state[name].width ~/ 2, -state[name].height)
-        ..onComplete.listen((_) {
-          if (!animationData['loop'] && animationData[name] != 'default') {
-            set('default');
-          }
-        });
+        ..setTransform(-state[name].width ~/ 2, -state[name].height);
       StreetRenderer.stage.juggler.add(state[name]);
     });
 

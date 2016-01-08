@@ -9,6 +9,7 @@ part 'src/keyboard.dart';
 
 part 'src/entities/entity.dart';
 part 'src/entities/player.dart';
+part 'src/entities/quoin.dart';
 part 'src/entities/npc.dart';
 
 part 'src/street/camera.dart';

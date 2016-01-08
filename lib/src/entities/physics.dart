@@ -1,7 +1,7 @@
 part of libstreet;
 
 abstract class Physics {
-  static Vector maxVelocity = new Vector(10, 5);
+  static Vector maxVelocity = new Vector(10, 30);
   static num friction = 0.25;
   static num gravity = 1;
 }
@@ -37,6 +37,11 @@ abstract class PhysicsEntity extends Entity {
     } else if (velocity.x < -Physics.maxVelocity.x) {
       velocity.x = -Physics.maxVelocity.x;
     }
+    if (velocity.y > Physics.maxVelocity.y) {
+      velocity.y = Physics.maxVelocity.y;
+    } else if (velocity.y < -Physics.maxVelocity.y) {
+      velocity.y = -Physics.maxVelocity.y;
+    }
 
     // process velocity
     x += velocity.x;
@@ -66,6 +71,14 @@ abstract class PhysicsEntity extends Entity {
       isTouchingLadder = ladder.collisionBox.contains(x, y);
       if (isTouchingLadder)
       break;
+    }
+
+
+    // flipping;
+    if (velocity.x < 0) {
+      animation.flipped = true;
+    } else if (velocity.x > 0) {
+      animation.flipped = false;
     }
   }
 
@@ -108,6 +121,8 @@ abstract class PhysicsEntity extends Entity {
     return bestPlatform;
   }
 }
+
+
 
 class Vector {
   num x = 0;
