@@ -56,8 +56,8 @@ class Player extends PhysicsEntity {
         activeClimb = false;
       }
 
-      // glow
       if (current == this) {
+        // glow
         NPC closest;
         for (NPC npc in StreetRenderer.current.npcLayer.children) {
           if (new Point(npc.x, npc.y).distanceTo(new Point(x, y)) >= 100) {
@@ -72,10 +72,16 @@ class Player extends PhysicsEntity {
             closest = npc;
           }
         }
-
         if (closest != null &&
             new Point(closest.x, closest.y).distanceTo(new Point(x, y)) < 100) {
           closest.glowing = true;
+        }
+
+        // quoins
+        for (Quoin q in StreetRenderer.current.quoinLayer.children) {
+          if (new Point(q.x, q.y).distanceTo(new Point(x, y - 50)) <= 50 && !q.disabled && !q.collected) {
+            q.pop();
+          }
         }
       }
     });
