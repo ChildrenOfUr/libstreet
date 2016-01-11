@@ -28,31 +28,11 @@ main() async {
     await resourceManager.load();
     Map ents = JSON.decode(resourceManager.getTextFile('ents'));
     List entities = ents['entities'];
+    List quoinTypes = ['Img', 'Mood', 'Quarazy', 'Energy', 'Currant', 'Mystery', 'Favor', 'Time'];
 
     for (Map entdef in entities) {
-      if (entdef['type'] == 'Img') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'img', 0);
-      }
-      if (entdef['type'] == 'Mood') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'mood', 0);
-      }
-      if (entdef['type'] == 'Quarazy') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'quarazy', 0);
-      }
-      if (entdef['type'] == 'Energy') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'energy', 0);
-      }
-      if (entdef['type'] == 'Currant') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'currant', 0);
-      }
-      if (entdef['type'] == 'Mystery') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'mystery', 0);
-      }
-      if (entdef['type'] == 'Favor') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'favor', 0);
-      }
-      if (entdef['type'] == 'Time') {
-        street.spawnQuoin(entdef['x'], entdef['y'], 'time', 0);
+      if (quoinTypes.contains(entdef['type'])) {
+        street.spawnQuoin(entdef['x'], entdef['y'], entdef['type'], 0);
       }
       if (entdef['type'] == 'Piggy') {
         Piggy piggy = new Piggy();
