@@ -7,6 +7,8 @@ class ChatBubble extends Sprite {
     int paddingY = 0;
 
     TextField text = new TextField();
+    var format = new TextFormat('Lato', 14, Color.Black);
+    text.defaultTextFormat = format;
     text.width = 250 + paddingX - 30;
     text.wordWrap = true;
     text.text = this.text;

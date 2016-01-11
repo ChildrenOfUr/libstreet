@@ -8,6 +8,7 @@ import 'dart:async';
 part 'src/keyboard.dart';
 
 part 'src/entities/entity.dart';
+part 'src/entities/signpost.dart';
 part 'src/entities/player.dart';
 part 'src/entities/quoin.dart';
 part 'src/entities/npc.dart';

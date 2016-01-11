@@ -7,9 +7,10 @@ class Street extends DisplayObjectContainer {
   Rectangle get bounds => new Rectangle(
       streetData['dynamic']['l'],
       streetData['dynamic']['t'],
-      (streetData['dynamic']['l'].abs() + streetData['dynamic']['r'].abs()).toInt(),
-      (streetData['dynamic']['t'].abs() + streetData['dynamic']['b'].abs()).toInt()
-  );
+      (streetData['dynamic']['l'].abs() + streetData['dynamic']['r'].abs())
+          .toInt(),
+      (streetData['dynamic']['t'].abs() + streetData['dynamic']['b'].abs())
+          .toInt());
   String get tsid => streetData['tsid'].replaceRange(0, 1, 'L');
   num get groundY => -(streetData['dynamic']['ground_y'] as num).abs();
 
@@ -27,7 +28,7 @@ class Street extends DisplayObjectContainer {
     addChild(new GradientLayer(streetData));
 
     List layerMaps = new List.from(streetData['dynamic']['layers'].values);
-    layerMaps.sort( (Map A, Map B) => A['z'].compareTo(B['z']) );
+    layerMaps.sort((Map A, Map B) => A['z'].compareTo(B['z']));
     for (Map layer in layerMaps) {
       String layerName = layer['name'].replaceAll(' ', '_');
       addChild(new ImageLayer(tsid, layerName, streetData));
@@ -38,6 +39,16 @@ class Street extends DisplayObjectContainer {
         addChild(npcLayer);
         playerLayer = new EntityLayer(streetData);
         addChild(playerLayer);
+      }
+    }
+    for (Map layer in layerMaps) {
+      for (Map signpost in layer['signposts']) {
+        print(signpost);
+        Signpost sp = new Signpost(signpost)
+          ..x = signpost['x']
+          ..y = signpost['y'];
+        sp.load();
+        npcLayer.addChild(sp);
       }
     }
     collisionLayer = new CollisionLayer(streetData);
@@ -61,5 +72,4 @@ class Street extends DisplayObjectContainer {
     quoinLayer.addChild(quoin);
     StreetRenderer.juggler.add(quoin);
   }
-
 }
