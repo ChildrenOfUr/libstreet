@@ -44,6 +44,7 @@ class Player extends PhysicsEntity {
       }
       if (Keyboard.pressed(32) && isOnGround) {
         impulse(0, -20);
+        spawnBubble('WHEE!', name, Color.Red);
       }
       if (Keyboard.pressed(87) && isTouchingLadder) {
         activeClimb = true;

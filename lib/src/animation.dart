@@ -31,6 +31,9 @@ class Animation extends Sprite {
   }
 
   set(String name) {
+    if (!state.containsKey(name)) {
+      throw('unloaded Animation $name!');
+    }
     if (current == name) return;
     children.clear();
     children.add(state[name]);

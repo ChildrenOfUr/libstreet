@@ -58,8 +58,8 @@ class Street extends DisplayObjectContainer {
     await quoin.load();
     quoin.x = x + bounds.left;
     quoin.y = y + bounds.top;
-    StreetRenderer.juggler.add(quoin);
     quoinLayer.addChild(quoin);
+    StreetRenderer.juggler.add(quoin);
   }
 
 }

@@ -29,6 +29,8 @@ class Piggy extends NPC {
         impulse(0.2, 0);
       } else if(state == 2) {
         impulse(-0.2, 0);
+      } else {
+        spawnBubble('Yo, dog.', 'Piggy');
       }
 
     });

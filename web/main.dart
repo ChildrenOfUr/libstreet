@@ -32,11 +32,10 @@ main() async {
 
     for (Map entdef in entities) {
       if (quoinTypes.contains(entdef['type'])) {
-        street.spawnQuoin(entdef['x'], entdef['y'], entdef['type'], 0);
-      }
-      if (entdef['type'] == 'Piggy') {
+        await street.spawnQuoin(entdef['x'], entdef['y'], entdef['type'], 0);
+      } else if (entdef['type'] == 'Piggy') {
         Piggy piggy = new Piggy();
-        street.spawnNPC(entdef['x'], entdef['y'], piggy);
+        await street.spawnNPC(entdef['x'], entdef['y'], piggy);
       }
     }
 
@@ -47,10 +46,6 @@ main() async {
     paal.x = street.bounds.left + 200;
     StreetRenderer.juggler.add(paal);
     street.playerLayer.addChild(paal);
-
-    ChatBubble cb = new ChatBubble('Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, ');
-    paal.addChild(cb);
-    cb.y = -paal.height;
 
     new Timer.periodic(new Duration(milliseconds: 15), (_) {
       StreetRenderer.camera.x = paal.x - street.bounds.left;

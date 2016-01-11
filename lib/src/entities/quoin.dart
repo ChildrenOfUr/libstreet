@@ -32,49 +32,49 @@ class Quoin extends Entity {
     'height': 8,
     'width': 24,
     'animations': {
-      'img': {
+      'Img': {
         'frames': [
           [0, 23]
         ],
         'loop': true
       },
-      'mood': {
+      'Mood': {
         'frames': [
           [24, 47]
         ],
         'loop': true
       },
-      'energy': {
+      'Energy': {
         'frames': [
           [48, 71]
         ],
         'loop': true
       },
-      'currant': {
+      'Currant': {
         'frames': [
           [72, 95]
         ],
         'loop': true
       },
-      'mystery': {
+      'Mystery': {
         'frames': [
           [96, 119]
         ],
         'loop': true
       },
-      'favor': {
+      'Favor': {
         'frames': [
           [120, 143]
         ],
         'loop': true
       },
-      'time': {
+      'Time': {
         'frames': [
           [144, 167]
         ],
         'loop': true
       },
-      'quarazy': {
+      'Quarazy': {
         'frames': [
           [168, 191]
         ],
