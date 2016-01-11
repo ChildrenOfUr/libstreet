@@ -68,6 +68,10 @@ main() async {
     StreetRenderer.juggler.add(paal);
     street.playerLayer.addChild(paal);
 
+    ChatBubble cb = new ChatBubble('Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, Howdy! Pardner!, ');
+    paal.addChild(cb);
+    cb.y = -paal.height;
+
     new Timer.periodic(new Duration(milliseconds: 15), (_) {
       StreetRenderer.camera.x = paal.x - street.bounds.left;
       StreetRenderer.camera.y = paal.y - 100 - street.bounds.top;

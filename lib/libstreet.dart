@@ -16,6 +16,7 @@ part 'src/street/camera.dart';
 part 'src/street/layers.dart';
 part 'src/street/street.dart';
 part 'src/street/lines.dart';
+part 'src/street/bubble.dart';
 
 part 'src/animation.dart';
 part 'src/entities/physics.dart';

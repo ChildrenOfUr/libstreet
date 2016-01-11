@@ -6,7 +6,6 @@ class Player extends PhysicsEntity {
   Player(this.name);
 
   load() async {
-    animation = new Animation();
     await animation.load(animationBatchTemplate);
     addChild(animation);
 

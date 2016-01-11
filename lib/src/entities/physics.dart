@@ -27,7 +27,7 @@ abstract class PhysicsEntity extends Entity {
     }
     if (!isOnGround && !activeClimb) {
       velocity.y += Physics.gravity;
-    } else if (activeClimb && (velocity.y > 0.01 || velocity.y < -0.01) ) {
+    } else if (activeClimb && (velocity.y > 0.01 || velocity.y < -0.01)) {
       velocity.y = velocity.y * (1 - Physics.friction);
     }
 
@@ -53,7 +53,10 @@ abstract class PhysicsEntity extends Entity {
       num slope = bestPlatform.slope;
       num yInt = bestPlatform.start.y - slope * bestPlatform.start.x;
       num lineY = slope * x + yInt;
-      if (y >= lineY && old.y <= lineY + 30 && velocity.y >= 0 && !activeClimb) {
+      if (y >= lineY &&
+          old.y <= lineY + 30 &&
+          velocity.y >= 0 &&
+          !activeClimb) {
         y = lineY;
         velocity.y = 0;
       }
@@ -69,10 +72,8 @@ abstract class PhysicsEntity extends Entity {
         .where((Sprite child) => child is Ladder);
     for (Ladder ladder in ladders) {
       isTouchingLadder = ladder.collisionBox.contains(x, y);
-      if (isTouchingLadder)
-      break;
+      if (isTouchingLadder) break;
     }
-
 
     // flipping;
     if (velocity.x < 0) {
@@ -122,15 +123,11 @@ abstract class PhysicsEntity extends Entity {
   }
 }
 
-
-
 class Vector {
   num x = 0;
   num y = 0;
-
   Vector(this.x, this.y);
   Vector.zero();
-
   operator /(num other) {
     return new Vector(x / other, y / other);
   }

@@ -1,6 +1,8 @@
 part of libstreet;
 
 class Animation extends Sprite {
+  Animation();
+
   num speed = 1;
   Map<String, FlipBook> state = {};
   String current;
@@ -8,6 +10,24 @@ class Animation extends Sprite {
   set flipped(bool flipped) {
     if (flipped) this.scaleX = -1;
     else this.scaleX = 1;
+  }
+
+  loadfromServer(
+      String url, String name, int rows, int columns, List<int> frameList,
+      {fps: 30, loopDelay: null, delayInitially: false, loops: true}) async {
+    Map def = {
+      'image': url,
+      'height': columns,
+      'width': rows,
+      'animations': {
+        name: {
+          'frames': [frameList],
+          'loop': loops
+        }
+      }
+    };
+
+    await load(def);
   }
 
   set(String name) {
@@ -39,7 +59,8 @@ class Animation extends Sprite {
     }
     await StreetRenderer.resourceManager.load();
 
-    BitmapData bitmapData = StreetRenderer.resourceManager.getBitmapData(data['image']);
+    BitmapData bitmapData =
+        StreetRenderer.resourceManager.getBitmapData(data['image']);
     SpriteSheet sheet = new SpriteSheet(bitmapData,
         bitmapData.width ~/ data['width'], bitmapData.height ~/ data['height']);
 
@@ -70,8 +91,11 @@ class Animation extends Sprite {
       StreetRenderer.stage.juggler.add(state[name]);
     });
 
-    if (data['animations'].keys.contains('default')) {
+    if (data['animations'].keys.contains('default') && current == null) {
       set('default');
+    }
+    if (current != null) {
+      set(current);
     }
   }
 }

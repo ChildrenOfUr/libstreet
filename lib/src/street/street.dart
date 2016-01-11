@@ -54,12 +54,10 @@ class Street extends DisplayObjectContainer {
   }
 
   spawnQuoin(int x, int y, String type, int value) async {
-    Quoin quoin = new Quoin();
+    Quoin quoin = new Quoin(type);
     await quoin.load();
     quoin.x = x + bounds.left;
     quoin.y = y + bounds.top;
-    quoin.animation.set(type);
-    quoin.value = value;
     StreetRenderer.juggler.add(quoin);
     quoinLayer.addChild(quoin);
   }

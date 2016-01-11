@@ -4,7 +4,11 @@ part of libstreet;
 class Quoin extends Entity {
   QuoinRing ring;
   int value = 1;
-  String type = 'Mood';
+  String type = 'None';
+
+  Quoin(this.type) {
+    value = 1 + new Math.Random().nextInt(10);
+  }
 
   bool disabled = false;
   bool collected = false;
@@ -16,15 +20,15 @@ class Quoin extends Entity {
   }
 
   load() async {
-    animation = new Animation();
     await animation.load(animationDef);
+    animation.set(type);
     ring = new QuoinRing('+$value $type');
     addChild(ring);
     addChild(animation);
   }
 
   Map animationDef = {
-    'image': 'packages/libstreet/images/quoins/quoins.png',
+    'image': 'https://raw.githubusercontent.com/RobertMcDermot/coUspritesheets/master/spritesheets/quoin/quoin__x1_1_x1_2_x1_3_x1_4_x1_5_x1_6_x1_7_x1_8_png_1354829599.png',
     'height': 8,
     'width': 24,
     'animations': {
@@ -73,14 +77,6 @@ class Quoin extends Entity {
       'quarazy': {
         'frames': [
           [168, 191]
-        ],
-        'loop': true
-      },
-
-      // reuse mystery for default.
-      'default': {
-        'frames': [
-          [96, 119]
         ],
         'loop': true
       }

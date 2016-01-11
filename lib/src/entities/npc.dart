@@ -3,11 +3,8 @@ part of libstreet;
 
 abstract class NPC extends PhysicsEntity {}
 
-
-
 class Piggy extends NPC {
   load() async {
-    animation = new Animation();
     await animation.load(animationDef);
     addChild(animation);
     int state = 0;
