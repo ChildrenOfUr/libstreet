@@ -56,6 +56,15 @@ class Street extends DisplayObjectContainer {
     addChild(collisionLayer);
   }
 
+
+  static Entity queryEntity(String id) {
+    
+
+
+
+  }
+
+
   spawnNPC(int x, int y, NPC npc) async {
     await npc.load();
     npc.x = x + bounds.left;

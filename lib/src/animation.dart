@@ -54,7 +54,7 @@ class Animation extends Sprite {
 
     // if the data is a batch of animations, load each individually.
     if (data is List) {
-      for (Map subdata in data['batch']) {
+      for (Map subdata in data) {
         await load(subdata);
       }
       return;

@@ -1,18 +1,9 @@
 part of libstreet;
 
-
 abstract class NPC extends PhysicsEntity {
-
-
   load(Map map) async {
-
-
-
-    onUpdate.listen((_) {
-
-    });
+    onUpdate.listen((_) {});
   }
-
 }
 
 class Piggy extends NPC {
@@ -37,72 +28,69 @@ class Piggy extends NPC {
       }
 
       // walk left or right
-      if(state == 1) {
+      if (state == 1) {
         impulse(0.2, 0);
-      } else if(state == 2) {
+      } else if (state == 2) {
         impulse(-0.2, 0);
       } else {
         spawnBubble('Yo, dog.', 'Piggy');
       }
-
     });
   }
 
-  Map animationDef = {
-    'batch': [
-      {
-        'image': 'packages/libstreet/images/piggy/walk.png',
-        'height': 3,
-        'width': 8,
-        'animations': {
-          'walk': {
-            'frames': [
-              [0, 23]
-            ],
-            'loop': true
-          }
-        }
-      },
-      {
-        'image': 'packages/libstreet/images/piggy/look.png',
-        'height': 5,
-        'width': 10,
-        'animations': {
-          'default': {
-            'frames': [
-              [0, 47]
-            ],
-            'bounce': true
-          }
-        }
-      },
-      {
-        'image': 'packages/libstreet/images/piggy/nibble.png',
-        'height': 6,
-        'width': 10,
-        'animations': {
-          'nibble': {
-            'frames': [
-              [0, 59]
-            ],
-            'loop': false
-          }
-        }
-      },
-      {
-        'image': 'packages/libstreet/images/piggy/toomuchnibble.png',
-        'height': 6,
-        'width': 11,
-        'animations': {
-          'tooMuchNibble': {
-            'frames': [
-              [0, 64]
-            ],
-            'loop': false
-          }
+  List animationDef = [
+    {
+      'image': 'packages/libstreet/images/piggy/walk.png',
+      'height': 3,
+      'width': 8,
+      'animations': {
+        'walk': {
+          'frames': [
+            [0, 23]
+          ],
+          'loop': true
         }
       }
-      // TODO add rooked anims
-    ]
-  };
+    },
+    {
+      'image': 'packages/libstreet/images/piggy/look.png',
+      'height': 5,
+      'width': 10,
+      'animations': {
+        'default': {
+          'frames': [
+            [0, 47]
+          ],
+          'bounce': true
+        }
+      }
+    },
+    {
+      'image': 'packages/libstreet/images/piggy/nibble.png',
+      'height': 6,
+      'width': 10,
+      'animations': {
+        'nibble': {
+          'frames': [
+            [0, 59]
+          ],
+          'loop': false
+        }
+      }
+    },
+    {
+      'image': 'packages/libstreet/images/piggy/toomuchnibble.png',
+      'height': 6,
+      'width': 11,
+      'animations': {
+        'tooMuchNibble': {
+          'frames': [
+            [0, 64]
+          ],
+          'loop': false
+        }
+      }
+    }
+    // TODO add rooked anims
+  ];
 }

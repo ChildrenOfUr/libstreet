@@ -67,7 +67,7 @@ class Player extends PhysicsEntity {
             break;
           }
           if (new Point(npc.x, npc.y).distanceTo(new Point(x, y)) <
-                  new Point(closest.x, closest.y).distanceTo(new Point(x, y))) {
+              new Point(closest.x, closest.y).distanceTo(new Point(x, y))) {
             closest = npc;
           }
         }
@@ -78,7 +78,9 @@ class Player extends PhysicsEntity {
 
         // quoins
         for (Quoin q in StreetRenderer.current.quoinLayer.children) {
-          if (new Point(q.x, q.y).distanceTo(new Point(x, y - 50)) <= 50 && !q.disabled && !q.collected) {
+          if (new Point(q.x, q.y).distanceTo(new Point(x, y - 50)) <= 50 &&
+              !q.disabled &&
+              !q.collected) {
             q.pop();
           }
         }
@@ -86,79 +88,77 @@ class Player extends PhysicsEntity {
     });
   }
 
-  Map animationBatchTemplate = {
-    'batch': [
-      {
-        'image': 'packages/libstreet/images/player/base.png',
-        'height': 1,
-        'width': 15,
-        'animations': {
-          'walk': {
-            'frames': [
-              [0, 11]
-            ],
-            'loop': true
-          },
-          'default': {
-            'frames': [14]
-          },
-          'flip': {
-            'frames': [12],
-            'loop': true
-          }
-        }
-      },
-      {
-        'image': 'packages/libstreet/images/player/climb.png',
-        'height': 1,
-        'width': 19,
-        'animations': {
-          'climb up': {
-            'frames': [
-              [0, 18]
-            ],
-            'loop': true
-          },
-          'climb down': {
-            'frames': [
-              [18, 0]
-            ],
-            'loop': true
-          }
-        }
-      },
-      {
-        'image': 'packages/libstreet/images/player/idle.png',
-        'height': 2,
-        'width': 29,
-        'animations': {
-          'idle': {
-            'frames': [
-              [0, 57]
-            ],
-            'loop': true
-          }
-        }
-      },
-      {
-        'image': 'packages/libstreet/images/player/jump.png',
-        'height': 1,
-        'width': 33,
-        'animations': {
-          'float up': {
-            'frames': [
-              [1, 11]
-            ],
-            'bounce': true
-          },
-          'float down': {
-            'frames': [
-              [12, 32]
-            ],
-            'bounce': true
-          }
+  List animationBatchTemplate = [
+    {
+      'image': 'packages/libstreet/images/player/base.png',
+      'height': 1,
+      'width': 15,
+      'animations': {
+        'walk': {
+          'frames': [
+            [0, 11]
+          ],
+          'loop': true
+        },
+        'default': {
+          'frames': [14]
+        },
+        'flip': {
+          'frames': [12],
+          'loop': true
         }
       }
-    ]
-  };
+    },
+    {
+      'image': 'packages/libstreet/images/player/climb.png',
+      'height': 1,
+      'width': 19,
+      'animations': {
+        'climb up': {
+          'frames': [
+            [0, 18]
+          ],
+          'loop': true
+        },
+        'climb down': {
+          'frames': [
+            [18, 0]
+          ],
+          'loop': true
+        }
+      }
+    },
+    {
+      'image': 'packages/libstreet/images/player/idle.png',
+      'height': 2,
+      'width': 29,
+      'animations': {
+        'idle': {
+          'frames': [
+            [0, 57]
+          ],
+          'loop': true
+        }
+      }
+    },
+    {
+      'image': 'packages/libstreet/images/player/jump.png',
+      'height': 1,
+      'width': 33,
+      'animations': {
+        'float up': {
+          'frames': [
+            [1, 11]
+          ],
+          'bounce': true
+        },
+        'float down': {
+          'frames': [
+            [12, 32]
+          ],
+          'bounce': true
+        }
+      }
+    }
+  ];
 }
