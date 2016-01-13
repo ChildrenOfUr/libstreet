@@ -57,8 +57,8 @@ class ChatBubble extends Sprite {
     applyCache(-10, -10, width + 20, height + 40);
     pivotX = width / 2;
     pivotY = height;
-    scaleX = 0;
-    scaleY = 0;
+    scaleX = 0.3;
+    scaleY = 0.3;
   }
 
   open() async {
@@ -70,10 +70,10 @@ class ChatBubble extends Sprite {
   }
 
   close() async {
-    Tween tween = new Tween(this, 0.8, Transition.easeInElastic);
+    Tween tween = new Tween(this, 0.5, Transition.easeInElastic);
     StreetRenderer.juggler.add(tween);
-    tween.animate.scaleY.to(0);
-    tween.animate.scaleX.to(0);
-    await new Future.delayed(new Duration(milliseconds: 800));
+    tween.animate.scaleY.to(0.5);
+    tween.animate.scaleX.to(0.5);
+    await new Future.delayed(new Duration(milliseconds: 500));
   }
 }

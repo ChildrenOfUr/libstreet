@@ -39,7 +39,7 @@ main() async {
       }
     }
 
-    Player paal = new Player('paal');
+    Player paal = new Player('Paal');
     Player.current = paal;
     await paal.load();
     paal.y = street.bounds.top + 200;

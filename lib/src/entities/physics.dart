@@ -17,6 +17,7 @@ abstract class PhysicsEntity extends Entity {
   @override
   advanceTime(num time) {
     super.advanceTime(time);
+
     Vector old = new Vector(x, y);
 
     // friction and gravity
@@ -43,9 +44,9 @@ abstract class PhysicsEntity extends Entity {
       velocity.y = -Physics.maxVelocity.y;
     }
 
-    // process velocity
-    x += velocity.x;
-    y += velocity.y;
+
+    x+= velocity.x * 60 * time;
+    y+= velocity.y * 60 * time;
 
     // process collisions with platforms.
     Platform bestPlatform = _getBestPlatform(old.y);

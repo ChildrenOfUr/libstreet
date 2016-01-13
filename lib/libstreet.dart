@@ -3,6 +3,7 @@ library libstreet;
 import 'package:stagexl/stagexl.dart';
 import 'dart:html' as html;
 import 'dart:math' as Math;
+import 'dart:convert';
 import 'dart:async';
 
 part 'src/keyboard.dart';
@@ -53,6 +54,7 @@ abstract class StreetRenderer {
     StageXL.stageOptions
       ..antialias = true
       ..transparent = true
+      ..inputEventMode = InputEventMode.MouseAndTouch
       ..backgroundColor = 0x00000000
       ..stageScaleMode = StageScaleMode.NO_SCALE
       ..stageAlign = StageAlign.TOP_LEFT;

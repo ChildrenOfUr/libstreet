@@ -1,7 +1,7 @@
 part of libstreet;
 
 /// a static representation of a camera. Makes sure it's in bounds;
-class Camera {
+class Camera extends TweenObject {
   Camera._();
 
   num _x = 0;

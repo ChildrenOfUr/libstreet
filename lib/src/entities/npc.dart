@@ -1,7 +1,19 @@
 part of libstreet;
 
 
-abstract class NPC extends PhysicsEntity {}
+abstract class NPC extends PhysicsEntity {
+
+
+  load(Map map) async {
+
+
+
+    onUpdate.listen((_) {
+
+    });
+  }
+
+}
 
 class Piggy extends NPC {
   load() async {
