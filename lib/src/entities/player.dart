@@ -58,7 +58,7 @@ class Player extends PhysicsEntity {
       if (current == this) {
         // glow
         NPC closest;
-        for (NPC npc in StreetRenderer.current.npcLayer.children) {
+        for (NPC npc in Street.current.npcLayer.children) {
           if (new Point(npc.x, npc.y).distanceTo(new Point(x, y)) >= 100) {
             npc.glowing = false;
           }
@@ -77,7 +77,7 @@ class Player extends PhysicsEntity {
         }
 
         // quoins
-        for (Quoin q in StreetRenderer.current.quoinLayer.children) {
+        for (Quoin q in Street.current.quoinLayer.children) {
           if (new Point(q.x, q.y).distanceTo(new Point(x, y - 50)) <= 50 &&
               !q.disabled &&
               !q.collected) {

@@ -25,7 +25,6 @@ part 'src/entities/physics.dart';
 
 abstract class StreetRenderer {
   // Static properties
-  static Street current;
   static Camera camera = new Camera._();
   static html.CanvasElement canvas = html.querySelector('canvas#street');
   static Stage stage = new Stage(canvas, width: 1024, height: 768);
@@ -83,11 +82,11 @@ abstract class StreetRenderer {
     num x = stage.x +
         StreetRenderer.camera.x -
         StreetRenderer.camera.viewport.width / 2 +
-        StreetRenderer.current.bounds.left;
+        Street.current.bounds.left;
     num y = stage.y +
         StreetRenderer.camera.y -
         StreetRenderer.camera.viewport.height / 2 +
-        StreetRenderer.current.bounds.top;
+        Street.current.bounds.top;
     return new Point(x, y);
   }
 

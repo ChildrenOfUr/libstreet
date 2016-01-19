@@ -1,6 +1,7 @@
 part of libstreet;
 
 class Street extends DisplayObjectContainer {
+  static Street current;
   Map streetData;
 
   @override
@@ -23,7 +24,8 @@ class Street extends DisplayObjectContainer {
 
   // Constructor
   Street(this.streetData) {
-    StreetRenderer.current = this;
+    Street.current = this;
+
     // adds layers
     addChild(new GradientLayer(streetData));
 
@@ -56,14 +58,20 @@ class Street extends DisplayObjectContainer {
     addChild(collisionLayer);
   }
 
-
+  /// Allows you to query an Entity by id.
   static Entity queryEntity(String id) {
-    
+    List entityHolders = [];
+    entityHolders.addAll(Street.current.npcLayer.children);
+    entityHolders.addAll(Street.current.playerLayer.children);
+    entityHolders.addAll(Street.current.quoinLayer.children);
 
-
-
+    for (Entity e in Street.current.npcLayer.children) {
+      if (e.id == id) {
+        return e;
+      }
+    }
+    return null;
   }
-
 
   spawnNPC(int x, int y, NPC npc) async {
     await npc.load();

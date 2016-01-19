@@ -57,11 +57,11 @@ abstract class Entity extends Sprite implements Animatable {
     _onUpdate.add(time);
 
     //keep in bounds.
-    if (x < StreetRenderer.current.bounds.left + bounds.width / 4) {
-      x = StreetRenderer.current.bounds.left + bounds.width / 4;
+    if (x < Street.current.bounds.left + bounds.width / 4) {
+      x = Street.current.bounds.left + bounds.width / 4;
     }
-    if (x > StreetRenderer.current.bounds.right - bounds.width / 4) {
-      x = StreetRenderer.current.bounds.right - bounds.width / 4;
+    if (x > Street.current.bounds.right - bounds.width / 4) {
+      x = Street.current.bounds.right - bounds.width / 4;
     }
   }
 

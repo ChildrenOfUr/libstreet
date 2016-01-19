@@ -12,24 +12,6 @@ class Animation extends Sprite {
     else this.scaleX = 1;
   }
 
-  loadfromServer(
-      String url, String name, int rows, int columns, List<int> frameList,
-      {fps: 30, loopDelay: null, delayInitially: false, loops: true}) async {
-    Map def = {
-      'image': url,
-      'height': columns,
-      'width': rows,
-      'animations': {
-        name: {
-          'frames': [frameList],
-          'loop': loops
-        }
-      }
-    };
-
-    await load(def);
-  }
-
   set(String name) {
     if (!state.containsKey(name)) {
       throw ('unloaded Animation $name!');

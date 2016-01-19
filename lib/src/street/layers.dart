@@ -4,8 +4,8 @@ class CollisionLayer extends Layer {
   Map streetData;
 
   CollisionLayer(this.streetData) {
-    layerWidth = StreetRenderer.current.bounds.width;
-    layerHeight = StreetRenderer.current.bounds.height;
+    layerWidth = Street.current.bounds.width;
+    layerHeight = Street.current.bounds.height;
 
     // Add ladders.
     List ladders = new List.from(streetData['dynamic']['layers']['middleground']['ladders']);
@@ -50,11 +50,11 @@ class CollisionLayer extends Layer {
   render(RenderState renderState) {
     num currentPercentX = (StreetRenderer.camera.x -
             StreetRenderer.camera.viewport.width / 2) /
-        (StreetRenderer.current.bounds.width -
+        (Street.current.bounds.width -
             StreetRenderer.camera.viewport.width);
     num currentPercentY = (StreetRenderer.camera.y -
             StreetRenderer.camera.viewport.height / 2) /
-        (StreetRenderer.current.bounds.height -
+        (Street.current.bounds.height -
             StreetRenderer.camera.viewport.height);
     num offsetX =
         (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
@@ -70,8 +70,8 @@ class CollisionLayer extends Layer {
 class EntityLayer extends Layer {
   Map streetData;
   EntityLayer(this.streetData) {
-    layerWidth = StreetRenderer.current.bounds.width;
-    layerHeight = StreetRenderer.current.bounds.height;
+    layerWidth = Street.current.bounds.width;
+    layerHeight = Street.current.bounds.height;
   }
 
   // Adjusts the layers according to the camera position.
@@ -79,11 +79,11 @@ class EntityLayer extends Layer {
   render(RenderState renderState) {
     num currentPercentX = (StreetRenderer.camera.x -
             StreetRenderer.camera.viewport.width / 2) /
-        (StreetRenderer.current.bounds.width -
+        (Street.current.bounds.width -
             StreetRenderer.camera.viewport.width);
     num currentPercentY = (StreetRenderer.camera.y -
             StreetRenderer.camera.viewport.height / 2) /
-        (StreetRenderer.current.bounds.height -
+        (Street.current.bounds.height -
             StreetRenderer.camera.viewport.height);
     num offsetX =
         (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
@@ -111,11 +111,11 @@ class ImageLayer extends Layer {
   render(RenderState renderState) {
     num currentPercentX = (StreetRenderer.camera.x -
             StreetRenderer.camera.viewport.width / 2) /
-        (StreetRenderer.current.bounds.width -
+        (Street.current.bounds.width -
             StreetRenderer.camera.viewport.width);
     num currentPercentY = (StreetRenderer.camera.y -
             StreetRenderer.camera.viewport.height / 2) /
-        (StreetRenderer.current.bounds.height -
+        (Street.current.bounds.height -
             StreetRenderer.camera.viewport.height);
     num offsetX =
         (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;
@@ -134,12 +134,12 @@ class GradientLayer extends Layer {
     String bottom = streetData['gradient']['bottom'];
 
     Shape shape = new Shape();
-    shape.graphics.rect(0, 0, StreetRenderer.current.bounds.width, StreetRenderer.current.bounds.height);
-    var gradient = new GraphicsGradient.linear(0, 0, 0, StreetRenderer.current.bounds.height);
+    shape.graphics.rect(0, 0, Street.current.bounds.width, Street.current.bounds.height);
+    var gradient = new GraphicsGradient.linear(0, 0, 0, Street.current.bounds.height);
     gradient.addColorStop(0, int.parse('0xFF$top'));
     gradient.addColorStop(1, int.parse('0xFF$bottom'));
     shape.graphics.fillGradient(gradient);
-    shape.applyCache(0, 0, StreetRenderer.current.bounds.width, StreetRenderer.current.bounds.height);
+    shape.applyCache(0, 0, Street.current.bounds.width, Street.current.bounds.height);
     BitmapData bitmapData = new BitmapData.fromRenderTextureQuad(shape.cache);
     Bitmap layerBitmap = new Bitmap(bitmapData);
     addChild(layerBitmap);
@@ -152,11 +152,11 @@ class GradientLayer extends Layer {
   render(RenderState renderState) {
     num currentPercentX = (StreetRenderer.camera.x -
             StreetRenderer.camera.viewport.width / 2) /
-        (StreetRenderer.current.bounds.width -
+        (Street.current.bounds.width -
             StreetRenderer.camera.viewport.width);
     num currentPercentY = (StreetRenderer.camera.y -
             StreetRenderer.camera.viewport.height / 2) /
-        (StreetRenderer.current.bounds.height -
+        (Street.current.bounds.height -
             StreetRenderer.camera.viewport.height);
     num offsetX =
         (layerWidth - StreetRenderer.camera.viewport.width) * currentPercentX;

@@ -69,7 +69,7 @@ abstract class PhysicsEntity extends Entity {
     }
 
     // process collisions with ladders
-    List ladders = StreetRenderer.current.collisionLayer.children
+    List ladders = Street.current.collisionLayer.children
         .where((Sprite child) => child is Ladder);
     for (Ladder ladder in ladders) {
       isTouchingLadder = ladder.collisionBox.contains(x, y);
@@ -92,7 +92,7 @@ abstract class PhysicsEntity extends Entity {
     Platform bestPlatform;
     num bestDiffY = double.INFINITY;
 
-    List list = StreetRenderer.current.collisionLayer.children
+    List list = Street.current.collisionLayer.children
         .where((Sprite child) => child is Platform)
         .where(
             (Platform platform) => x >= platform.start.x && x <= platform.end.x)
