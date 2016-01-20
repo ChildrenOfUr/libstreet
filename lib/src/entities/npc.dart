@@ -67,12 +67,10 @@ Map PIGGYDEF = {
             "setAnimation": 'walk',
             "if": {
               "left": {
-                "impulseX": -0.2,
-                "reset": ''
+                "impulseX": -0.2
               }
             }, "else": {
-              "impulseX": 0.2,
-              "reset": ''
+              "impulseX": 0.2
             }
           }
         }, "else" : {
@@ -82,7 +80,8 @@ Map PIGGYDEF = {
 
       {
         "wait": 3000,
-        "randomize": "left"
+        "randomize": "left",
+        "reset": ''
       }
     ]
   },
