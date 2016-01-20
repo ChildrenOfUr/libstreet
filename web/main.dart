@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:html' as html;
 import 'package:libstreet/libstreet.dart';
+import 'package:libstreet/commander.dart';
 
 ResourceManager resourceManager = new ResourceManager();
 
 main() async {
+  demo();
+
   StreetRenderer.init();
 
   html.querySelector('#snap').onClick.listen((_) async {
