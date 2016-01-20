@@ -1,40 +1,93 @@
 part of libstreet;
 
-abstract class NPC extends PhysicsEntity {}
+Math.Random R = new Math.Random();
 
-class Piggy extends NPC {
-  load() async {
-    await animation.load(animationDef);
-    addChild(animation);
-    int state = 0;
+class NPC extends PhysicsEntity {
+  Map definition;
+  CommandNode nodes;
+  List<String> flags;
+  NPC(this.definition) {
+    Vector acceleration = new Vector.zero();
 
-    Math.Random R = new Math.Random();
-    new Timer.periodic(new Duration(seconds: 1), (_) {
-      state = R.nextInt(3);
-    });
-
-    onUpdate.listen((_) {
-      // ground animations
-      if (isOnGround) {
-        if (velocity.x.abs() > 0.5) {
-          animation.set('walk');
+    int threads = 0;
+    Map functions = {
+      "print": print,
+      "setAnimation": animation.set,
+      "impulseX": (x) => acceleration.x = x,
+      "impulseY": (y) => acceleration.y = y,
+      "reset": (_) async {
+        await nodes.activate(flags);
+      },
+      "randomize": (String flag) {
+        if (R.nextBool()) {
+          if (!flags.contains(flag))
+            flags.add(flag);
         } else {
-          animation.set('default');
+          if (flags.contains(flag))
+            flags.remove(flag);
         }
       }
 
-      // walk left or right
-      if (state == 1) {
-        impulse(0.2, 0);
-      } else if (state == 2) {
-        impulse(-0.2, 0);
-      } else {
-        spawnBubble('Yo, dog.', 'Piggy');
-      }
+
+    };
+    nodes = new CommandNode(definition['nodes'], 0, functions);
+    flags = definition['flags'];
+
+    onUpdate.listen((_) {
+      impulse(acceleration.x, acceleration.y);
     });
   }
+  load() async {
+    await animation.load(definition['animation']);
+    addChild(animation);
+    print(nodes);
+    nodes.activate(flags);
+  }
+}
 
-  List animationDef = [
+
+
+Map PIGGYDEF = {
+  "physics" : {
+    "gravity": -5
+  },
+
+  "flags" : [
+    "walking",
+    "left"
+  ],
+
+
+  // perhaps replace this with a 'state' system.
+  "nodes" : {
+    "children": [
+      {
+        "if": {
+          "walking": {
+            "setAnimation": 'walk',
+            "if": {
+              "left": {
+                "impulseX": -0.2,
+                "reset": ''
+              }
+            }, "else": {
+              "impulseX": 0.2,
+              "reset": ''
+            }
+          }
+        }, "else" : {
+          "setAnimation": 'default'
+        }
+      },
+
+      {
+        "wait": 3000,
+        "randomize": "left"
+      }
+    ]
+  },
+
+  "animation": [
     {
       'image': 'packages/libstreet/images/piggy/walk.png',
       'height': 3,
@@ -87,6 +140,5 @@ class Piggy extends NPC {
         }
       }
     }
-    // TODO add rooked anims
-  ];
-}
+  ]
+};

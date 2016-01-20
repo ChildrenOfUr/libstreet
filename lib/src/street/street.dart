@@ -45,7 +45,6 @@ class Street extends DisplayObjectContainer {
     }
     for (Map layer in layerMaps) {
       for (Map signpost in layer['signposts']) {
-        print(signpost);
         Signpost sp = new Signpost(signpost)
           ..x = signpost['x']
           ..y = signpost['y'];

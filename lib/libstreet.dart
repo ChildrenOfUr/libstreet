@@ -3,8 +3,9 @@ library libstreet;
 import 'package:stagexl/stagexl.dart';
 import 'dart:html' as html;
 import 'dart:math' as Math;
-import 'dart:convert';
 import 'dart:async';
+import 'package:libstreet/commander.dart';
+import 'package:libstreet/animation.dart';
 
 part 'src/keyboard.dart';
 
@@ -20,7 +21,6 @@ part 'src/street/street.dart';
 part 'src/street/lines.dart';
 part 'src/street/bubble.dart';
 
-part 'src/animation.dart';
 part 'src/entities/physics.dart';
 
 abstract class StreetRenderer {
@@ -50,6 +50,7 @@ abstract class StreetRenderer {
   /// Sets up the initial stage variables.
   static init() {
     Keyboard.init();
+    Animation.setJuggler(juggler);
     StageXL.stageOptions
       ..antialias = true
       ..transparent = true

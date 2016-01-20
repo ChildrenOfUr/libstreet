@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:html' as html;
 import 'package:libstreet/libstreet.dart';
-import 'package:libstreet/commander.dart';
 
 ResourceManager resourceManager = new ResourceManager();
 
 main() async {
-  demo();
 
   StreetRenderer.init();
 
@@ -37,7 +35,7 @@ main() async {
       if (quoinTypes.contains(entdef['type'])) {
         await street.spawnQuoin(entdef['x'], entdef['y'], entdef['type'], 0);
       } else if (entdef['type'] == 'Piggy') {
-        Piggy piggy = new Piggy();
+        NPC piggy = new NPC(PIGGYDEF);
         await street.spawnNPC(entdef['x'], entdef['y'], piggy);
       }
     }

@@ -1,6 +1,16 @@
-part of libstreet;
+library animation;
+import 'package:stagexl/stagexl.dart';
+import 'dart:html' as html;
 
 class Animation extends Sprite {
+  static ResourceManager _resources = new ResourceManager();
+  static Juggler _juggler = new Juggler();
+
+  static setJuggler(Juggler juggler) {
+    _juggler = juggler;
+  }
+
+
   Animation();
 
   num speed = 1;
@@ -44,13 +54,13 @@ class Animation extends Sprite {
       BitmapData bitmapData;
 
       if (data['image'] is String) {
-        if (!StreetRenderer.resourceManager.containsBitmapData(data['image'])) {
-          StreetRenderer.resourceManager
+        if (!_resources.containsBitmapData(data['image'])) {
+          _resources
               .addBitmapData(data['image'], data['image']);
         }
-        await StreetRenderer.resourceManager.load();
+        await _resources.load();
         bitmapData =
-            StreetRenderer.resourceManager.getBitmapData(data['image']);
+            _resources.getBitmapData(data['image']);
       } else if (data['image'] is html.ImageElement) {
         await (data['image'] as html.ImageElement).onLoad.first;
         bitmapData = new BitmapData.fromImageElement(data['image']);
@@ -87,7 +97,7 @@ class Animation extends Sprite {
         state[name]
           ..loop = animationData['loop'] ?? false
           ..setTransform(-state[name].width ~/ 2, -state[name].height);
-        StreetRenderer.stage.juggler.add(state[name]);
+        _juggler.add(state[name]);
       });
 
       if (data['animations'].keys.contains('default') && current == null) {
