@@ -66,6 +66,8 @@ abstract class StreetRenderer {
     shape.graphics.fillColor(Color.White);
     shape.applyCache(0, 0, 10, 10);
     pixel = new BitmapData.fromRenderTextureQuad(shape.cache);
+
+    print(canvas.height);
   }
 
   /// set the gradient of the background.

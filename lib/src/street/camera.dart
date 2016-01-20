@@ -27,8 +27,8 @@ class Camera extends TweenObject {
 
   Rectangle get viewport =>
     new Rectangle(_x, _y,
-      StreetRenderer.stage.stageWidth * (StreetRenderer.canvas.width / StreetRenderer.stage.stageWidth),
-      StreetRenderer.stage.stageHeight * (StreetRenderer.canvas.height / StreetRenderer.stage.stageHeight));
+      StreetRenderer.stage.stageWidth,
+      StreetRenderer.stage.stageHeight);
 
   @override
   toString() => 'x:$x y:$y';
