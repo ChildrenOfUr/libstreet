@@ -35,7 +35,7 @@ main() async {
       if (quoinTypes.contains(entdef['type'])) {
         await street.spawnQuoin(entdef['x'], entdef['y'], entdef['type'], 0);
       } else if (entdef['type'] == 'Piggy') {
-        NPC piggy = new NPC(PIGGYDEF);
+        NPC piggy = new NPC('piggy', PIGGYDEF);
         await street.spawnNPC(entdef['x'], entdef['y'], piggy);
       }
     }

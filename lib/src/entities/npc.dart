@@ -4,12 +4,12 @@ Math.Random R = new Math.Random();
 
 class NPC extends PhysicsEntity {
   Map definition;
+  String name;
   CommandNode nodes;
   List<String> flags;
-  NPC(this.definition) {
+  NPC(this.name, this.definition) {
     Vector acceleration = new Vector.zero();
 
-    int threads = 0;
     Map functions = {
       "print": print,
       "setAnimation": animation.set,
@@ -48,16 +48,11 @@ class NPC extends PhysicsEntity {
 
 
 Map PIGGYDEF = {
-  "physics" : {
-    "gravity": -5
-  },
-
   "flags" : [
     "walking",
     "left"
   ],
-
-
+  
   // perhaps replace this with a 'state' system.
   "nodes" : {
     "children": [

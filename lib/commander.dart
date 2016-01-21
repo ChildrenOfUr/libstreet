@@ -15,8 +15,6 @@ Map cup =  {
   }
 };
 
-//TODO
-// delay and waitForFlag tokens
 
 demo() {
   // default functions must be registered before a Node is created.
